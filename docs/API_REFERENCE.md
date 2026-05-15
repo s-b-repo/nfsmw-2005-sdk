@@ -114,6 +114,71 @@ if (a) { auto fn = nfsmw::resolve_rel32(a); /* call target */ }
 can false-match inside non-code data. Pattern-matcher logic is covered by
 `tests/host_tests.py` (run in CI).
 
+## iat_hook.h — import-table hook (opt-in)
+
+Non-invasive interception of imported API calls (KERNEL32, USER32, D3D9,
+DINPUT8…). No code patched; trivially reversible. Self-contained PE
+walk, kernel32-only.
+
+- `nfsmw_iat_hook(module, "DLL", "Func", detour, &orig)` — module NULL =
+  main exe. Returns 1; `*orig` = previous pointer.
+- `nfsmw_iat_unhook(module, "DLL", "Func", orig)`.
+- `nfsmw::IatHook raii(mod, dll, fn, detour, &orig);` — auto-restores.
+
+Caveat: only catches calls routed through the IAT; `GetProcAddress` /
+cached pointers need an inline hook on the API itself. Example:
+`iat_hook_demo`.
+
+## midhook.h — mid-function register hook (opt-in, MinHook backend)
+
+Fire at an **arbitrary instruction** inside a function with full CPU
+register access. The capture thunk is emitted as raw machine code at
+runtime (no inline asm; toolchain-independent).
+
+- `nfsmw_regs { eflags, edi, esi, ebp, esp_, ebx, edx, ecx, eax }` —
+  writes are applied on resume (except `esp_`: no stack pivot).
+- `nfsmw_midhook_install(&mh, addr, cb)` / `nfsmw_midhook_remove(&mh)`.
+- `nfsmw::MidHook mh(addr, cb);` — RAII; `mh.installed()`.
+
+Requires `-DNFSMW_HOOKS_BACKEND=minhook` (default). On the `simple`
+backend it compiles to a no-op returning failure. Target must be an
+instruction boundary with ≥5 relocatable bytes. Example: `midhook_demo`.
+
+## input.h — action-binding layer (opt-in)
+
+Typed access to the ~76-action binding layer (`NFSMW_ActionID_*` enum =
+row index).
+
+- `nfsmw_input_binding_row(action)` — the 0x34-byte template row to
+  inspect or rebind.
+- `nfsmw_input_runtime_mirror()` — polled-state base.
+- `nfsmw::input::on_poll(cb)` — runs `cb` each frame **after** the
+  engine refreshes all action values (read state, or write the mirror
+  to inject/override input). Robust inline-hook on
+  `PollAllGameActionBindingsPerFrame`.
+- Overridable: `NFSMW_INPUT_BINDING_TEMPLATE/STRIDE/ROWS`,
+  `NFSMW_INPUT_RUNTIME_MIRROR`.
+
+## lua.h — register C natives for game scripts (opt-in)
+
+NFSMW scripting is vanilla **Lua 5.0.2**. Add C functions callable from
+mission/AI/UI scripts.
+
+- `nfsmw::lua::on_register_natives(cb)` — inline-hooks
+  `RegisterScriptNativesGameplay`; runs `cb` after all built-ins bind,
+  so the script env is complete.
+- `nfsmw_lua_register(name, cfunc, api, L)` — Path A: define
+  `NFSMW_LUA_REGISTRAR` (the engine's `(name,fnptr)` helper, resolved
+  per build via Ghidra / `scan.h`) → registered exactly like a
+  built-in. Path B: pass a populated `nfsmw_lua_api` + `lua_State` to
+  bind via the standard Lua 5.0 sequence.
+- Verified anchors: `NFSMW_FN_RegisterScriptNativesGameplay`,
+  `NFSMW_FN_luaV_execute`, `NFSMW_FN_luaD_call/precall`.
+
+The one build-specific address (`NFSMW_LUA_REGISTRAR`) is an overridable
+macro by design — the SDK ships the mechanism + verified anchors, never
+a guessed address. Example: `lua_native_demo`.
+
 ## d3d9_hooks.h — render-loop hook (opt-in)
 
 Not in the umbrella. `#include <nfsmw_sdk/d3d9_hooks.h>`. Self-contained:

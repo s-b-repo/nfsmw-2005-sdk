@@ -42,8 +42,8 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 | Replace a C++ virtual method | ✅ | `nfsmw::VTableHook<Sig>` — swap any vtable slot, chain to original |
 | Detour a free function (clean ≥5-byte prologue) | ✅ | `nfsmw::JmpDetour` (simple 5-byte) or — recommended — `nfsmw::InlineHook` |
 | Hook **any** function reliably (incl. tiny/relative prologues) | ✅ | `nfsmw::InlineHook<Sig>` — vendored **MinHook** backend (default CMake build); relocates prologue instructions, safe enable/disable |
-| Mid-function hook (hook an arbitrary instruction, not just entry) | 🔜 v1.2 | Needs the trampoline engine; roadmap |
-| Hook imported API calls (D3D9, file IO, Win32) | 🔜 v1.2 | IAT hook helper; roadmap |
+| Mid-function hook (hook an arbitrary instruction, not just entry) | ✅ | `nfsmw::MidHook` (`midhook.h`) — runtime-emitted register-capture thunk + MinHook trampoline; read/modify CPU regs, resume. Needs MinHook backend |
+| Hook imported API calls (D3D9, file IO, Win32) | ✅ | `nfsmw_iat_hook` (`iat_hook.h`) — non-invasive IAT thunk swap, kernel32-only. (Doesn't catch GetProcAddress/cached ptrs — inline-hook those) |
 | Hook the D3D9 render loop (overlays, ImGui, custom HUD) | ✅ | opt-in `<nfsmw_sdk/d3d9_hooks.h>` → `nfsmw_d3d9_install` / `nfsmw::on_endscene` (+ Reset); self-contained vtable hook, no d3d9.lib |
 | Unhook / restore | ✅ | RAII wrappers restore on destruction; MinHook backend adds safe disable |
 | Thread-safe hook install while game runs | ⚠️ | NFSMW game code is effectively single-threaded; MinHook suspends threads on (un)install but uninstalling while a thread is *in* your trampoline is still UB |
@@ -67,7 +67,8 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 |---|---|---|
 | Runtime keyboard hotkeys / toggles | ✅ | opt-in `<nfsmw_sdk/hotkeys.h>` (edge-triggered poll thread) |
 | Draw an on-screen overlay / debug UI | ✅ | via the D3D9 EndScene hook (ImGui-ready); `overlay_demo` example draws every frame with zero external deps |
-| Read the game's own input bindings | ⚠️ | Binding table mapped in RE DB (`0x008f6d80`); no typed wrapper yet — use raw addresses |
+| Read / override the game's own input | ✅ | `input.h` — `nfsmw_input_binding_row(action)` to inspect/rebind; `nfsmw::input::on_poll(cb)` runs each frame right after the engine refreshes action state (read or inject) |
+| Add a C function callable from game scripts | ✅ | `lua.h` — `nfsmw::lua::on_register_natives` + `nfsmw_lua_register` (vanilla Lua 5.0.2). One build-specific registrar address (`NFSMW_LUA_REGISTRAR`) resolved per target |
 | Managed config UI (BepInEx `ConfigEntry` style) | ❌ | No managed runtime — native game. Use your own INI/file, or hotkeys |
 
 ### Distribution & build
@@ -97,26 +98,29 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
   hooks *any* function prologue reliably. Selectable
   `-DNFSMW_HOOKS_BACKEND=minhook|simple` (default `minhook`).
 
-**v1.1 — remaining:**
-- `<nfsmw_sdk/d3d9_hooks.h>` — `nfsmw::on_endscene` / `on_reset` +
-  `overlay_demo` example. Unlocks overlays / ImGui / custom rendering.
+**v1.1 — done:**
+- ✅ `<nfsmw_sdk/d3d9_hooks.h>` — `nfsmw::on_endscene` / Reset +
+  `overlay_demo`. Overlays / ImGui / custom rendering.
 
-**v1.2 (planned):**
-- IAT (import) hook helper.
-- Typed wrapper over the game input-binding table.
-- Mid-function hook helper (on top of the trampoline engine).
+**v1.2 — done:**
+- ✅ IAT (import) hook helper — `iat_hook.h`.
+- ✅ Typed input-binding access + per-frame poll hook — `input.h`.
+- ✅ Mid-function (register-context) hook — `midhook.h`.
+- ✅ Lua 5.0.2 native registration — `lua.h` (was "deferred"; shipped
+  as a mechanism + verified anchors; the one build-specific registrar
+  address is an overridable macro, by design — no guessed addresses).
 
-**Deferred (needs a real use case):**
-- Native registration of new Lua script functions (the 5.0.2 VM is
-  mapped, but exposing C to scripts is large design surface — auth,
-  sandboxing — and there's no demand yet).
+**Roadmap (future, on demand):** ImGui drop-in helper; INI/config
+helper; automatic signature-backed address resolution for the
+`NFSMW_FN_*` table.
 
 ## Bottom line
 
 For a native Win32 game, "can I mod anything?" reduces to "can I hook
-any function and read/write any memory?" Today: **any vtable method, any
-memory, any documented function, any attribute, any clean-prologue
-function.** After v1.1 (MinHook + D3D9): **any function, plus the render
-loop** — which is the practical ceiling for native game modding. The
-remaining ❌ items are inherent to a no-managed-runtime native game, not
-SDK shortcomings.
+any function and read/write any memory?" The SDK now does: **any vtable
+method, any function entry (MinHook), any *instruction* (mid-hook with
+register context), any imported API (IAT), the D3D9 render loop, any
+memory, any documented function, any attribute, the input layer, and new
+Lua script natives.** That is the practical ceiling for native game
+modding — the remaining ❌ items are inherent to a no-managed-runtime
+native game, not SDK shortcomings.

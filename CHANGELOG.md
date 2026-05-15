@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### Added (v1.2 — full mod surface)
+
+- **`iat_hook.h`** (opt-in): non-invasive import-table hooking
+  (`nfsmw_iat_hook` / `nfsmw::IatHook`). Kernel32-only PE walk.
+  `iat_hook_demo` example.
+- **`midhook.h`** (opt-in, MinHook backend): mid-function
+  register-context hook — `nfsmw::MidHook`, `nfsmw_regs`. Runtime-emitted
+  capture thunk (no inline asm). `midhook_demo` example.
+- **`input.h`** (opt-in): typed binding-template/mirror access +
+  `nfsmw::input::on_poll` (per-frame, robust inline-hook on the action
+  poller — read or inject input).
+- **`lua.h`** (opt-in): register C functions as Lua 5.0.2 script natives
+  — `nfsmw::lua::on_register_natives` + `nfsmw_lua_register`. Verified
+  anchors shipped; the build-specific registrar is an overridable macro
+  (`NFSMW_LUA_REGISTRAR`). `lua_native_demo` example.
+- `docs/CAPABILITIES.md` updated: all v1.2 + the previously "deferred"
+  Lua item flipped to ✅; "bottom line" reflects the full mod surface.
+
 ### Added (v1.1 — robust hooking)
 
 - **Vendored MinHook** (`extern/minhook/`, © Tsuda Kageyu, BSD-2) as the
