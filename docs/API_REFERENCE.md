@@ -111,6 +111,27 @@ if (a) { auto fn = nfsmw::resolve_rel32(a); /* call target */ }
 
 Pattern-matcher logic is covered by `tests/host_tests.py` (run in CI).
 
+## hotkeys.h — runtime keybinds (opt-in)
+
+Not pulled in by the umbrella header. `#include <nfsmw_sdk/hotkeys.h>`
+explicitly; it adds a user32 dependency (the core SDK stays
+kernel32-only). Edge-triggered (fires once per press) via a background
+`GetAsyncKeyState` poll thread — works in menus/loading and on patched
+executables.
+
+- `nfsmw_hotkey_register(vk, cb, user)` — register a `VK_*` key; `cb` is
+  `void(*)(void*)`. Returns 1, or 0 if the table is full.
+- `nfsmw_hotkeys_start()` — start the poll thread (idempotent).
+- `nfsmw::on_hotkey(vk, callable)` — C++ convenience for stateless
+  lambdas; auto-starts the pump.
+- Tunables: `NFSMW_HOTKEYS_MAX` (32), `NFSMW_HOTKEYS_POLL_MS` (30).
+
+```cpp
+#include <nfsmw_sdk/hotkeys.h>
+nfsmw_hotkey_register(VK_F5, [](void*){ /* non-capturing */ }, nullptr);
+nfsmw_hotkeys_start();
+```
+
 ## hooks.h
 
 C API:
