@@ -115,18 +115,25 @@ namespace nfsmw {
 template <typename T>
 inline T* global(uintptr_t addr) { return reinterpret_cast<T*>(addr); }
 
-/* Typed shortcuts for the most-used globals */
-inline bool*   DrawCars                  = reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawCars);
-inline bool*   DrawCarShadow             = reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawCarShadow);
-inline bool*   DrawHUD                   = reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawHUD);
-inline bool*   IsInNIS                   = reinterpret_cast<bool*>(NFSMW_GLOBAL_IsInNIS);
-inline bool*   SkipFE                    = reinterpret_cast<bool*>(NFSMW_GLOBAL_SkipFE);
-inline bool*   SkipFEDisableCops         = reinterpret_cast<bool*>(NFSMW_GLOBAL_SkipFEDisableCops);
-inline bool*   Tweak_InfiniteNOS         = reinterpret_cast<bool*>(NFSMW_GLOBAL_Tweak_InfiniteNOS);
-inline bool*   Tweak_InfiniteRaceBreaker = reinterpret_cast<bool*>(NFSMW_GLOBAL_Tweak_InfiniteRaceBreaker);
-inline float*  Tweak_GameSpeed           = reinterpret_cast<float*>(NFSMW_GLOBAL_Tweak_GameSpeed);
-inline float*  AnimationSpeed            = reinterpret_cast<float*>(NFSMW_GLOBAL_AnimationSpeed);
-inline uint16_t* NOSFOVWidening          = reinterpret_cast<uint16_t*>(NFSMW_GLOBAL_NOSFOVWidening);
+/* Typed accessors for the most-used globals.
+ *
+ * These are functions (not C++17 inline variables) so the header works on
+ * C++14 and earlier with no ODR concerns. Call them:
+ *
+ *     *nfsmw::DrawCars() = false;
+ *     *nfsmw::Tweak_GameSpeed() = 2.0f;
+ */
+inline bool*     DrawCars()                  { return reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawCars); }
+inline bool*     DrawCarShadow()             { return reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawCarShadow); }
+inline bool*     DrawHUD()                   { return reinterpret_cast<bool*>(NFSMW_GLOBAL_DrawHUD); }
+inline bool*     IsInNIS()                   { return reinterpret_cast<bool*>(NFSMW_GLOBAL_IsInNIS); }
+inline bool*     SkipFE()                    { return reinterpret_cast<bool*>(NFSMW_GLOBAL_SkipFE); }
+inline bool*     SkipFEDisableCops()         { return reinterpret_cast<bool*>(NFSMW_GLOBAL_SkipFEDisableCops); }
+inline bool*     Tweak_InfiniteNOS()         { return reinterpret_cast<bool*>(NFSMW_GLOBAL_Tweak_InfiniteNOS); }
+inline bool*     Tweak_InfiniteRaceBreaker() { return reinterpret_cast<bool*>(NFSMW_GLOBAL_Tweak_InfiniteRaceBreaker); }
+inline float*    Tweak_GameSpeed()           { return reinterpret_cast<float*>(NFSMW_GLOBAL_Tweak_GameSpeed); }
+inline float*    AnimationSpeed()            { return reinterpret_cast<float*>(NFSMW_GLOBAL_AnimationSpeed); }
+inline uint16_t* NOSFOVWidening()            { return reinterpret_cast<uint16_t*>(NFSMW_GLOBAL_NOSFOVWidening); }
 
 } // namespace nfsmw
 #endif /* __cplusplus */

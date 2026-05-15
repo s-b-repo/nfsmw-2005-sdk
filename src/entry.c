@@ -31,19 +31,21 @@ static int nfsmw_run_once(const char *via) {
         OutputDebugStringA("[nfsmw_sdk] not inside speed.exe - refusing\n");
         return 1;
     }
-    {
-        char buf[96];
-        wsprintfA(buf, "[nfsmw_sdk] plugin starting via %s\n", via);
-        OutputDebugStringA(buf);
-    }
+    OutputDebugStringA("[nfsmw_sdk] plugin starting via ");
+    OutputDebugStringA(via);
+    OutputDebugStringA("\n");
     return nfsmw_plugin_main_ptr ? nfsmw_plugin_main_ptr() : -1;
 }
 
 /* ---- ASI path ---- */
 
+#ifndef NFSMW_ASI_INIT_DELAY_MS
+#define NFSMW_ASI_INIT_DELAY_MS 2000  /* override at compile time if needed */
+#endif
+
 static DWORD WINAPI nfsmw_asi_worker(LPVOID lpv) {
     (void)lpv;
-    Sleep(2000); /* let the engine finish early init */
+    Sleep(NFSMW_ASI_INIT_DELAY_MS); /* let the engine finish early init */
     nfsmw_run_once("ASI");
     return 0;
 }
