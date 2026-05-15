@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install MinGW-w64 (i686) + CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake zip
+
+      - name: Cross-build all example mods
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j
+
+      - name: Package artifacts
+        run: |
+          set -e
+          mkdir -p dist/nfsmw-sdk-examples
+          cp build/examples/*.dll build/examples/*.asi README.md \
+             dist/nfsmw-sdk-examples/
+          ( cd dist && zip -r "nfsmw-sdk-examples-${GITHUB_REF_NAME}.zip" \
+               nfsmw-sdk-examples )
+          for d in build/examples/*.dll; do
+            file "$d" | grep -q "Intel" || { echo "bad: $d"; exit 1; }
+          done
+
+      - name: Create / update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/nfsmw-sdk-examples-${{ github.ref_name }}.zip
+          generate_release_notes: true
+          body: |
+            Pre-built example mods (PE32 i386, dual ASI + BepInEx 6
+            native). Built by CI from this tag with the MinGW-w64 i686
+            cross toolchain. Drop a `.asi` into `<NFSMW>/scripts/` or a
+            `.dll` into `<NFSMW>/BepInEx/plugins/`. See README.md.
