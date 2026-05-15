@@ -1,0 +1,9 @@
+{
+  "name": "NFSMW-SDK-Plugin",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/s-b-repo/nfsmw-2005-re",
+  "description": "Native NFSMW (2005) plugin built with nfsmw_sdk. Loads under BepInEx 6 NativeBootstrap.",
+  "dependencies": [
+    "BepInEx-BepInExPack-6.0.0"
+  ]
+}
