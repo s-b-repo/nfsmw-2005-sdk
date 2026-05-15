@@ -36,7 +36,7 @@ jobs:
           set -e
           for dll in build/examples/*.dll; do
             file "$dll"
-            file "$dll" | grep -q "Intel i386" || { echo "NOT i386: $dll"; exit 1; }
+            file "$dll" | grep -qE "Intel (i386|80386)" || { echo "NOT i386: $dll"; exit 1; }
           done
           ls build/examples/*.asi >/dev/null
 
@@ -69,7 +69,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=$PWD/cmake/nfsmw-toolchain-mingw-i686.cmake \
             -Dnfsmw_sdk_DIR=$PWD/_prefix/lib/cmake/nfsmw_sdk
           cmake --build /tmp/consumer/b
-          file /tmp/consumer/b/ci_consumer.dll | grep -q "Intel i386"
+          file /tmp/consumer/b/ci_consumer.dll | grep -qE "Intel (i386|80386)"
           test -f /tmp/consumer/b/ci_consumer.asi
 
   cpp14:
