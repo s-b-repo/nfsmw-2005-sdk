@@ -60,6 +60,7 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 | Read/write vehicle & game attributes by name | ✅ | `nfsmw_find_collection` + `nfsmw_attr_get/set_float/int` (`Collection::GetData @ 0x454190`) |
 | 294 verified attribute name hashes + bChunk | ✅ | `NFSMW_ATTR_*`, `NFSMW_BCHUNK("MASS")` (Jenkins mix3, exact) |
 | 65 engine enums | ✅ | `NFSMW_<Enum>_<Member>` |
+| Typed engine struct field offsets | ✅ (partial, honest) | `structs.h` — `NFSMW_OFF_<S>_<f>` + `NFSMW_SIZEOF_<S>` for **79** no/single-inheritance structs (compiler-derived from berkayylmao's NFSPluginSDK type defs under MSVC-matching flags; ABI-invariant vs the retail game). **21** multiple/virtual-inheritance structs are opaque typedefs with offsets withheld (Itanium↔MSVC base placement can differ; no in-binary ground truth). No fabricated numbers |
 
 ### Input & UX
 
@@ -111,9 +112,16 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
   as a mechanism + verified anchors; the one build-specific registrar
   address is an overridable macro, by design — no guessed addresses).
 
+**Struct layouts — done (partial, honest):** `structs.h` ships
+compiler-derived field offsets for the 79 ABI-invariant structs; the 21
+multiple/virtual-inheritance ones stay opaque (no certifiable offsets).
+The remaining ~145 `sdk_structs.json` names are nested/other-namespace
+and were excluded rather than guessed.
+
 **Roadmap (future, on demand):** ImGui drop-in helper; INI/config
 helper; automatic signature-backed address resolution for the
-`NFSMW_FN_*` table.
+`NFSMW_FN_*` table; offsets for the MI structs if/when extracted from
+the binary (the only authoritative source for those).
 
 ## Bottom line
 
@@ -121,7 +129,8 @@ For a native Win32 game, "can I mod anything?" reduces to "can I hook
 any function and read/write any memory?" The SDK now does: **any vtable
 method, any function entry (MinHook), any *instruction* (mid-hook with
 register context), any imported API (IAT), the D3D9 render loop, any
-memory, any documented function, any attribute, the input layer, and new
-Lua script natives.** That is the practical ceiling for native game
+memory, any documented function, any attribute, typed struct fields (79
+ABI-invariant structs), the input layer, and new Lua script natives.**
+That is the practical ceiling for native game
 modding — the remaining ❌ items are inherent to a no-managed-runtime
 native game, not SDK shortcomings.

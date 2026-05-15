@@ -1,0 +1,1362 @@
+[
+{
+"name": "AIAvoidable",
+"size": 28,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mGridNode": 4,
+"mNeighbors": 8,
+"mUnk": 24
+}
+},
+{
+"name": "AIGoal",
+"size": 28,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mCurrentAction": 4,
+"mActions": 8,
+"mOwner": 24
+}
+},
+{
+"name": "AIPerpVehicle",
+"size": 2372,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AISpawnManager",
+"size": 12,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mMinSpawnDist": 4,
+"mMaxSpawnDist": 8
+}
+},
+{
+"name": "AITarget",
+"size": 64,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mOwner": 12,
+"mTargetPosition": 16,
+"mTargetSimable": 28,
+"mTargetDirection": 32,
+"mValid": 44,
+"mDirTo": 48,
+"mDistTo": 60
+}
+},
+{
+"name": "AIVehicle",
+"size": 2236,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AIVehicleCopCar",
+"size": 2348,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mLOSAngleFront": 2340,
+"mPerpHiddenFromMe": 2344
+}
+},
+{
+"name": "AIVehicleEmpty",
+"size": 2236,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {}
+},
+{
+"name": "AIVehicleHelicopter",
+"size": 2540,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AIVehicleHuman",
+"size": 2412,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AIVehiclePid",
+"size": 2264,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"pBodyError": 2236,
+"pHeadingError": 2240,
+"pVelocityError": 2244,
+"pSteeringController": 2248,
+"pThrottleBrakeController": 2252,
+"mThrottleBrake": 2256,
+"mPrevDesiredSpeed": 2260
+}
+},
+{
+"name": "AIVehiclePursuit",
+"size": 2340,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AIVehicleRacecar",
+"size": 2380,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "AIVehicleTraffic",
+"size": 2244,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "ActionData",
+"size": 12,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mId": 0,
+"mSlot": 4,
+"mData": 8
+}
+},
+{
+"name": "ActionQueue",
+"size": 652,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"fQueue": 0,
+"mPort": 616,
+"mState": 620,
+"mMappings": 624,
+"mConfig": 628,
+"mQueueName": 632,
+"mUniqueID": 636,
+"mConnected": 640,
+"mRequired": 641,
+"mActionTime": 644,
+"mActivationTime": 648
+}
+},
+{
+"name": "Attachments",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mList": 0,
+"mOwner": 16
+}
+},
+{
+"name": "AudioSettings",
+"size": 52,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"MasterVol": 0,
+"SpeechVol": 4,
+"FEMusicVol": 8,
+"IGMusicVol": 12,
+"SoundEffectsVol": 16,
+"EngineVol": 20,
+"CarVol": 24,
+"AmbientVol": 28,
+"SpeedVol": 32,
+"AudioMode": 36,
+"InteractiveMusicMode": 40,
+"EATraxMode": 44,
+"PlayState": 48
+}
+},
+{
+"name": "BehaviorParams",
+"size": 32,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mParams": 16,
+"mOwner": 20,
+"mSig": 24,
+"mMechanic": 28
+}
+},
+{
+"name": "CarPart",
+"size": 14,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"PartNameHashBot": 0,
+"PartNameHashTop": 2,
+"PartID": 4,
+"GroupNumber_UpgradeLevel": 5,
+"BaseModelNameHashSelector": 6,
+"CarTypeNameHashIndex": 7,
+"NameOffset": 8,
+"AttributeTableOffset": 10,
+"ModelNameHashTableOffset": 12
+}
+},
+{
+"name": "CareerPursuitScores",
+"size": 32,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Value": 0
+}
+},
+{
+"name": "CareerSettings",
+"size": 636,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"CurrentCar": 0,
+"SpecialFlags": 4,
+"CurrentBin": 8,
+"CurrentCash": 12,
+"AdaptiveDifficulty": 16,
+"SMSMessages": 18,
+"SMSSortOrder": 618,
+"CaseFileName": 620
+}
+},
+{
+"name": "CostToStateScores",
+"size": 32,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mNumRoadblocksDeployed": 0,
+"mNumTrafficCarsHit": 4,
+"mNumSpikeStripsDeployed": 8,
+"mNumHeliSpikeStripsDeployed": 12,
+"mNumCopCarsDeployed": 16,
+"mNumSupportVehiclesDeployed": 20,
+"mPropertyDamageValue": 24,
+"mNumPropertiesDamaged": 28
+}
+},
+{
+"name": "DamageCopCar",
+"size": 192,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mFlippedOver": 184,
+"mThinkTas": 188
+}
+},
+{
+"name": "DamageDragster",
+"size": 216,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {}
+},
+{
+"name": "DamageHeli",
+"size": 192,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mAutoDestruct": 184,
+"mDestroying": 188
+}
+},
+{
+"name": "DamageRacer",
+"size": 216,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "DamageVehicle",
+"size": 184,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "DebugVehicleSelection",
+"size": 52,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mSelectionIndex": 24,
+"mSelectionList": 32,
+"mCollisionObject": 44,
+"mCollisionSurface": 48
+}
+},
+{
+"name": "FECarRecord",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mHandle": 0,
+"mFEKey": 4,
+"mVehicleKey": 8,
+"mFilterBits": 12,
+"mCustomization": 16,
+"mCareerHandle": 17,
+"mPadd": 18
+}
+},
+{
+"name": "FECareerRecord",
+"size": 56,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mHandle": 0,
+"mTheImpoundData": 2,
+"mVehicleHeat": 12,
+"mBounty": 16,
+"mNumEvadedPursuits": 20,
+"mNumBustedPursuits": 22,
+"mUnservedInfractions": 24,
+"mServedInfractions": 40
+}
+},
+{
+"name": "FECustomizationRecord",
+"size": 408,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mInstalledParts": 0,
+"mInstalledPhysics": 280,
+"mTunings": 312,
+"mActiveTuning": 396,
+"mPreset": 400,
+"mHandle": 404
+}
+},
+{
+"name": "FEImage",
+"size": 84,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"ImageFlags": 80
+}
+},
+{
+"name": "FEImpoundData",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"MaxBusted": 0,
+"TimesBusted": 1,
+"ImpoundedState": 2,
+"DaysBeforeRelease": 3,
+"EvadeCount": 4,
+"Pad1": 5,
+"Pad2": 6
+}
+},
+{
+"name": "FEInfractionsData",
+"size": 16,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Speeding": 0,
+"Racing": 2,
+"Reckless": 4,
+"Assault": 6,
+"HitAndRun": 8,
+"Damage": 10,
+"Resist": 12,
+"OffRoad": 14
+}
+},
+{
+"name": "FEKeyboardSettings",
+"size": 332,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"AcceptCallbackHash": 0,
+"DeclineCallbackHash": 4,
+"DefaultTextHash": 8,
+"MaxTextLength": 12,
+"Mode": 16,
+"Buffer": 20,
+"Title": 176
+}
+},
+{
+"name": "FEMinList",
+"size": 12,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"numElements": 0,
+"head": 4,
+"tail": 8
+}
+},
+{
+"name": "FEMinNode",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"next": 0,
+"prev": 4
+}
+},
+{
+"name": "FEMultiImage",
+"size": 108,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"hTexture": 84,
+"TextureFlags": 96
+}
+},
+{
+"name": "FEObject",
+"size": 80,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"GUID": 8,
+"NameHash": 12,
+"pName": 16,
+"Type": 20,
+"Flags": 24,
+"RenderContext": 28,
+"ResourceIndex": 30,
+"Handle": 32,
+"UserParam": 36,
+"pData": 40,
+"DataSize": 44,
+"Responses": 48,
+"Scripts": 60,
+"pCurrentScript": 72,
+"Cached": 76
+}
+},
+{
+"name": "FEPlayerCarDB",
+"size": 36040,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"CarTable": 0,
+"Customizations": 4000,
+"CareerRecords": 34600,
+"SoldHistoryBounty": 36000,
+"SoldHistoryNumEvadedPursuits": 36004,
+"SoldHistoryNumBustedPursuits": 36006,
+"SoldHistoryUnservedInfractions": 36008,
+"SoldHistoryServedInfractions": 36024
+}
+},
+{
+"name": "FEngHud",
+"size": 824,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "FinishedRaceStatsEntry",
+"size": 192,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"FinishPosition": 0,
+"DriverNumber": 4,
+"FinishReason": 8,
+"RaceTime": 12,
+"BestLapTime": 16,
+"HandlingMode": 20,
+"TopSpeed": 24,
+"AverageSpeed": 28,
+"LapTimes": 32,
+"LapRunningTimes": 76,
+"NumLapsCompleted": 120,
+"NumLapsCompletedExact": 124,
+"PositionPerLap": 128,
+"NumLapsLead": 160,
+"Odometer": 164,
+"ZeroToSixtyTime": 168,
+"QuarterMileTime": 172,
+"QuarterMileSpeed": 176,
+"LongestJump": 180,
+"LongestPowerSlide": 184,
+"WasRecordBreaker": 188
+}
+},
+{
+"name": "FloatSpring",
+"size": 16,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mX": 0,
+"mV": 4,
+"mC": 8,
+"mD": 12
+}
+},
+{
+"name": "GCharacter",
+"size": 124,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "GEventTimer",
+"size": 36,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mInterval": 0,
+"mRunning": 4,
+"mElapsed": 8,
+"mNameHash": 12,
+"mName": 16
+}
+},
+{
+"name": "GPS",
+"size": 1080,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mTarget": 72,
+"mTask": 84,
+"mPosition": 88,
+"mArrowModel": 100,
+"mDirection": 104,
+"mState": 116,
+"mRoadNav": 120,
+"mPathDist": 1056,
+"mDrawn": 1060,
+"mAngle": 1064,
+"mScale": 1068,
+"mMaxDeviation": 1072,
+"mDeviation": 1076
+}
+},
+{
+"name": "GRaceParameters",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mIndex": 4,
+"mRaceRecord": 8,
+"mParentVault": 12,
+"mChildVault": 16
+}
+},
+{
+"name": "GRaceStatus",
+"size": 17748,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "GRacerInfo",
+"size": 404,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mhSimable": 0,
+"mGameCharacter": 4,
+"mName": 8,
+"mIndex": 12,
+"mRanking": 16,
+"mAiRanking": 20,
+"mPctRaceComplete": 24,
+"mKnockedOut": 28,
+"mTotalled": 29,
+"mEngineBlown": 30,
+"mBusted": 31,
+"mChallengeComplete": 32,
+"mFinishedRacing": 33,
+"mCameraDetached": 34,
+"mPctLapComplete": 36,
+"mLapsCompleted": 40,
+"mCheckpointsHitThisLap": 44,
+"mTollboothsCrossed": 48,
+"mTimeRemainingToBooth": 52,
+"mSpeedTrapsCrossed": 116,
+"mSpeedTrapSpeed": 120,
+"mSpeedTrapPosition": 184,
+"mDistToNextCheckpoint": 248,
+"mDistanceDriven": 252,
+"mTopSpeed": 256,
+"mFinishingSpeed": 260,
+"mPoundsNOSUsed": 264,
+"mTimeCrossedLastCheck": 268,
+"mTotalUpdateTime": 272,
+"mNumPerfectShifts": 276,
+"mNumTrafficCarsHit": 280,
+"mSpeedBreakerTime": 284,
+"mPointTotal": 288,
+"mZeroToSixtyTime": 292,
+"mQuarterMileTime": 296,
+"mSplitTimes": 300,
+"mSplitRankings": 316,
+"mRaceTimer": 332,
+"mLapTimer": 344,
+"mCheckTimer": 356,
+"mSavedPosition": 368,
+"mSavedHeatLevel": 380,
+"mSavedDirection": 384,
+"mSavedSpeed": 396,
+"mDNF": 400
+}
+},
+{
+"name": "GTimer",
+"size": 12,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mStartTime": 0,
+"mTotalTime": 4,
+"mRunning": 8
+}
+},
+{
+"name": "GTrigger",
+"size": 200,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mWorldTrigger": 36,
+"mDirection": 100,
+"mTriggerEnabled": 112,
+"mSimObjInside": 116,
+"mEventList": 132,
+"mEventStaticData": 148,
+"mTriggerEventData": 164,
+"mParticleEffect": 180,
+"mIcon": 188,
+"mEnabled": 192,
+"mActivationReferences": 196
+}
+},
+{
+"name": "GameplaySettings",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"AutoSaveOn": 0,
+"RearviewOn": 1,
+"Damage": 2,
+"SpeedoUnits": 3,
+"RacingMiniMapMode": 4,
+"ExploringMiniMapMode": 5,
+"MapItems": 8,
+"LastMapZoom": 12,
+"LastPursuitMapZoom": 13,
+"LastMapView": 14,
+"JumpCam": 15,
+"HighlightCam": 16
+}
+},
+{
+"name": "GenericMessage",
+"size": 136,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "GroundSupportRequest",
+"size": 88,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mHeavySupport": 0,
+"mLeaderSupport": 4,
+"mIVehicleList": 8,
+"mVehicleGoals": 64,
+"mSupportTimer": 80,
+"mSupportRequestStatus": 84
+}
+},
+{
+"name": "HeliSheetCoordinate",
+"size": 44,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"PreviousElevation": 0,
+"VertexValid": 4,
+"Vertex": 8
+}
+},
+{
+"name": "HighScoresDatabase",
+"size": 3032,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"TrackHighScoreTable": 0,
+"TotalOdometer": 2560,
+"TotalStarts": 2564,
+"TotalWins": 2568,
+"TotalLosses": 2572,
+"RaceTypeScores": 2576,
+"SplitScreenScores": 2592,
+"TotalDragTotalled": 2600,
+"TopEvadedPursuitScores": 2604,
+"CareerPursuitDetails": 2884,
+"BestPursuitRankings": 2916,
+"CostToStateDetails": 2996,
+"PreviouslyPursuedCarFEKey": 3028
+}
+},
+{
+"name": "HudElement",
+"size": 40,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Objects": 4,
+"pPackageName": 12,
+"Mask": 16,
+"CurrentHudFeatures": 24,
+"mCurrentlySetVisible": 32
+}
+},
+{
+"name": "ICause",
+"size": 12,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"_mHandle": 8
+}
+},
+{
+"name": "ISimable",
+"size": 12,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"_mHandle": 8
+}
+},
+{
+"name": "InputControls",
+"size": 36,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mBanking": 0,
+"mSteering": 4,
+"mSteeringVertical": 8,
+"mStrafeVertical": 12,
+"mStrafeHorizontal": 16,
+"mGas": 20,
+"mBrake": 24,
+"mHandBrake": 28,
+"mActionButton": 32,
+"mNOS": 33
+}
+},
+{
+"name": "InputPlayer",
+"size": 124,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "JukeboxEntry",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"SongIndex": 0,
+"PlayabilityField": 4
+}
+},
+{
+"name": "LocalPlayer",
+"size": 136,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "MilestoneTypeInfo",
+"size": 16,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mTypeKey": 0,
+"mLastKnownValue": 4,
+"mBestValue": 8,
+"mFlags": 12
+}
+},
+{
+"name": "MiniMapItem",
+"size": 28,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"pIcon": 8,
+"ItemPosition": 12,
+"ItemType": 20,
+"bHidden": 24
+}
+},
+{
+"name": "Minimap",
+"size": 816,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"StaticMiniMapItems": 36,
+"TrackmapLayout": 44,
+"TrackmapArt": 48,
+"TrackmapNorth": 128,
+"mPlayerCarIndicator": 132,
+"mPlayerCarIndicator2": 136,
+"CurrentTrack": 140,
+"mMapDefaultPos": 144,
+"mSpeedZoomScale": 156,
+"mPolyRotation": 160,
+"mTrackTargetNormalized": 164,
+"mTrackMapCentre": 172,
+"mCopFlashCounter": 180,
+"MinimapRotateWithPlayer": 184,
+"mHeliElementArt": 188,
+"mHeliLineOfSiteArt": 192,
+"mCopElementArt": 196,
+"mRacerElementArt": 228,
+"mCheckpointElementArt": 260,
+"mGPSSelectionElementArt": 264
+}
+},
+{
+"name": "ObjectStateBlockHeader",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mKey": 0,
+"mSize": 4
+}
+},
+{
+"name": "OptionsSettings",
+"size": 132,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"CurrentCategory": 0,
+"TheVideoSettings": 4,
+"TheGameplaySettings": 20,
+"TheAudioSettings": 40,
+"ThePlayerSettings": 92
+}
+},
+{
+"name": "PInput",
+"size": 116,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "PhysicsObject",
+"size": 172,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "PlayerSettings",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"GaugesOn": 0,
+"PositionOn": 1,
+"LapInfoOn": 2,
+"ScoreOn": 3,
+"Rumble": 4,
+"LeaderboardOn": 5,
+"TransmissionPromptOn": 6,
+"DriveWithAnalog": 7,
+"Config": 8,
+"CurCam": 12,
+"SplitTimeType": 16,
+"Transmission": 17,
+"Handling": 18
+}
+},
+{
+"name": "PursuitScore",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"CarFEKey": 0,
+"Value": 4
+}
+},
+{
+"name": "RBSmackable",
+"size": 392,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mSpecs": 368,
+"mFrame": 388
+}
+},
+{
+"name": "RBTractor",
+"size": 528,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "RBVehicle",
+"size": 468,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "RaceParameters",
+"size": 120,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"TrackNumber": 0,
+"TrackDirection": 4,
+"TrafficDensity": 5,
+"TrafficOncoming": 8,
+"AIDemoMode": 12,
+"ReplayDemoMode": 13,
+"RaceType": 14,
+"Point2Point": 16,
+"RollingStartSpeed": 20,
+"NumLapsInRace": 24,
+"NumPlayerCars": 28,
+"NumAICars": 32,
+"NumOnlinePlayerCars": 36,
+"NumOnlineAICars": 40,
+"PlayerStartPosition": 44,
+"DamageEnabled": 46,
+"HandlingMode": 47,
+"FinishLineNumber": 48,
+"bDragRaceFlag": 52,
+"bDriftRaceFlag": 53,
+"bBurnoutFlag": 54,
+"bShortRaceFlag": 55,
+"bOnlineRace": 56,
+"bCarShowFlag": 57,
+"bGamebreakerOn": 58,
+"PlayerJoyports": 60,
+"nMaxCops": 68,
+"CopStrength": 72,
+"DriftOpponentScoreMultiplier": 76,
+"OpponentStrength": 80,
+"Boost": 84,
+"BoostScale": 88,
+"AIDifficultyModifier": 96,
+"PlayerDriverNumber": 100,
+"NumDriverInfo": 108,
+"TimeTrialTime": 112,
+"bCareerEventRace": 116
+}
+},
+{
+"name": "RacePreparationInfo",
+"size": 36,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mPosition": 0,
+"mSpeed": 12,
+"mDirection": 16,
+"mHeatLevel": 28,
+"mFlags": 32
+}
+},
+{
+"name": "RaceSettings",
+"size": 24,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"EventHash": 0,
+"NumLaps": 4,
+"TrackDirection": 5,
+"IsLapKO": 6,
+"NumOpponents": 7,
+"AISkill": 8,
+"CopDensity": 9,
+"TrafficDensity": 10,
+"CatchUp": 11,
+"CopsOn": 12,
+"RegionFilterBits": 13,
+"SelectedCar": 16
+}
+},
+{
+"name": "RaceTypeHighScores",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"TotalStarts": 0,
+"TotalWins": 4
+}
+},
+{
+"name": "RideInfo",
+"size": 784,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Type": 0,
+"InstanceIndex": 4,
+"HasDash": 5,
+"CanBeVertexDamaged": 6,
+"SkinType": 7,
+"mMinLodLevel": 8,
+"mMaxLodLevel": 12,
+"mMinFELodLevel": 16,
+"mMaxFELodLevel": 20,
+"mMaxLicenseLodLevel": 24,
+"mMinTrafficDiffuseLodLevel": 28,
+"mMinShadowLodLevel": 32,
+"mMaxShadowLodLevel": 36,
+"mMaxTireLodLevel": 40,
+"mMaxBrakeLodLevel": 44,
+"mMaxSpoilerLodLevel": 48,
+"mMaxRoofScoopLodLevel": 52,
+"mMinReflectionLodLevel": 56,
+"mCompositeSkinHash": 60,
+"mCompositeWheelHash": 64,
+"mCompositeSpinnerHash": 68,
+"mPartsTable": 72,
+"mPartsEnabled": 628,
+"PreviewPart": 768,
+"mMyCarLoaderHandle": 772,
+"mMyCarRenderUsage": 776,
+"mSpecialLODBehavior": 780
+}
+},
+{
+"name": "SMSMessage",
+"size": 4,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Handle": 0,
+"Flags": 1,
+"SortOrder": 2
+}
+},
+{
+"name": "SimpleChopper",
+"size": 212,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "Smackable",
+"size": 332,
+"inheritance": "multi_base",
+"abi_safe": false,
+"fields": null
+},
+{
+"name": "SmackableParams",
+"size": 156,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"fMatrix": 16,
+"fVirginSpawn": 144,
+"fScenery": 148,
+"fSimplePhysics": 152
+}
+},
+{
+"name": "TimeOfDay",
+"size": 20,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mUpdateRate": 0,
+"mUpdateDirection": 4,
+"mCurrentTimeOfDay": 8,
+"mSunAzimuth": 12,
+"mSunLatitude": 16
+}
+},
+{
+"name": "Timer",
+"size": 4,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mStart": 0
+}
+},
+{
+"name": "TopEvadedPursuitDetail",
+"size": 56,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"PursuitName": 0,
+"CarFEKey": 12,
+"Bounty": 16,
+"Length": 20,
+"NumCops": 24,
+"NumCopsDamaged": 28,
+"NumCopsDestroyed": 32,
+"NumRoadblocksDodged": 36,
+"NumSpikeStripsDodged": 40,
+"TotalCostToState": 44,
+"NumInfractions": 48,
+"NumHelicopters": 52
+}
+},
+{
+"name": "TrackHighScore",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"TrackNumber": 0,
+"NumLaps": 2,
+"Direction": 3,
+"BestLapTime": 4
+}
+},
+{
+"name": "TrackInfo",
+"size": 288,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"Name": 0,
+"TrackDirectory": 32,
+"RegionName": 64,
+"RegionDirectory": 72,
+"LocationNumber": 104,
+"LocationDirectory": 108,
+"LocationName": 124,
+"DriftType": 128,
+"IsValid": 132,
+"Point2Point": 133,
+"ReverseVersionExists": 134,
+"Unused": 135,
+"IsPerformanceTuning": 136,
+"TrackNumber": 138,
+"SameAsTrackNumber": 140,
+"SunInfoNameHash": 144,
+"UsageFlags": 148,
+"TrackLength": 152,
+"TimeToBeatForwards_ms": 156,
+"TimeToBeatReverse_ms": 160,
+"ScoreToBeatForwards_DriftOnly": 164,
+"ScoreToBeatReverse_DriftOnly": 168,
+"TrackMapCalibrationUpperLeft": 172,
+"TrackMapCalibrationMapWidthMetres": 180,
+"TrackMapCalibrationRotation": 184,
+"TrackMapStartLineAngle": 186,
+"TrackMapFinishLineAngle": 188,
+"TrackMapZoomFactor": 192,
+"ForwardDifficulty": 196,
+"ReverseDifficulty": 200,
+"NumSecondsBeforeShortcutsAllowed": 220,
+"nDriftSecondsMin": 222,
+"nDriftSecondsMax": 224,
+"pad2": 226,
+"TrafficAllowedNearStartLine": 236,
+"CarRaceStartConfig": 238,
+"padbyte": 239,
+"TrafficMinInitialDistanceFromStartLine": 240,
+"TrafficMinInitialDistanceBetweenCars": 248,
+"TrafficOncomingFraction": 256,
+"TrackMapZoomTopLeft": 272,
+"TrackMapZoomWidth": 280,
+"TrackMapStartZoomed": 284
+}
+},
+{
+"name": "UCrc32",
+"size": 4,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"mCRC": 0
+}
+},
+{
+"name": "USpline",
+"size": 180,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"fSplineMat": 0,
+"fLookAt": 128,
+"fSplineType": 160,
+"fSplinePtList": 164
+}
+},
+{
+"name": "UserProfile",
+"size": 40120,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"m_aProfileName": 0,
+"m_bNamed": 32,
+"mTheOptionsSettings": 36,
+"mTheCareerSettings": 168,
+"mPlaylist": 804,
+"mPlayersCarStable": 1044,
+"mCareerModeHasBeenCompletedAtLeastOnce": 37084,
+"mHighScores": 37088
+}
+},
+{
+"name": "VehicleBehavior",
+"size": 76,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mVehicle": 72
+}
+},
+{
+"name": "VehicleParams",
+"size": 48,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"mDriverClass": 16,
+"mVehicleKey": 20,
+"mDirection": 24,
+"mPosition": 28,
+"mCustomization": 32,
+"mVehicleCache": 36,
+"mPerformanceMatch": 40,
+"mFlags": 44
+}
+},
+{
+"name": "VideoSettings",
+"size": 16,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"FEScale": 0,
+"ScreenOffsetX": 4,
+"ScreenOffsetY": 8,
+"WideScreen": 12
+}
+},
+{
+"name": "bList",
+"size": 8,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"HeadNode": 0
+}
+},
+{
+"name": "bPNode",
+"size": 12,
+"inheritance": "single_base",
+"abi_safe": true,
+"fields": {
+"Object": 8
+}
+},
+{
+"name": "cFinishedRaceStats",
+"size": 1540,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"RaceStats": 0,
+"NumStats": 1536
+}
+},
+{
+"name": "cFrontEndDatabase",
+"size": 2452,
+"inheritance": "no_base",
+"abi_safe": true,
+"fields": {
+"iNumPlayers": 0,
+"bComingFromBoot": 1,
+"bSavedProfileForMP": 2,
+"bProfileLoaded": 3,
+"bIsOptionsDirty": 4,
+"bAutoSaveOverwriteConfirmed": 5,
+"iDefaultStableHash": 8,
+"PlayerJoyports": 12,
+"CurrentUserProfiles": 16,
+"RaceMode": 24,
+"TheQuickRaceSettings": 28,
+"m_pCarStableBackup": 292,
+"m_pDBBackup": 296,
+"FEGameMode": 300,
+"LoadSaveGame": 304,
+"mFEKeyboardSettings": 308,
+"iCurPauseSubOptionType": 640,
+"iCurPauseOptionType": 644,
+"SplitScreenCustomization": 648,
+"SplitScreenCarType": 652,
+"FinishedRaceStats": 908,
+"PostRaceOptionChosen": 2448
+}
+}
+]
