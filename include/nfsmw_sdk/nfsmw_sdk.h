@@ -22,6 +22,7 @@
 #include "enums.h"
 #include "attributes.h"
 #include "hooks.h"
+#include "scan.h"
 
 /* ---- Entry-point macros — abstract over ASI vs BepInEx vs Direct ---- */
 

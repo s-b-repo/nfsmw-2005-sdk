@@ -81,6 +81,27 @@ auto coll = nfsmw_find_collection("pvehicle", "bmwm3gtre46");
 uint32_t mass = NFSMW_BCHUNK("MASS");
 ```
 
+## scan.h — signature scanner
+
+Hardcoded `NFSMW_FN_*` addresses are exact for retail `speed.exe` but
+break on repacked / patched / modded binaries. Locate code by byte
+pattern instead:
+
+- `nfsmw_aob_scan("8B 0D ?? ?? ?? ??")` / `nfsmw::aob(...)` — scan the
+  main module image; `??` or `?` = wildcard byte. Returns the match
+  address or `0`.
+- `nfsmw_aob_scan_range(start, len, pattern)` — scan an explicit range.
+- `nfsmw_resolve_rel32(at, instr_len)` / `nfsmw::resolve_rel32(at, n=5)`
+  — turn an `E8`/`E9` rel32 at `at` into the absolute target.
+- `nfsmw_main_module_range(&base, &size)` — the scanned image bounds.
+
+```cpp
+uintptr_t a = nfsmw::aob("E8 ?? ?? ?? ?? 8B 4C 24 10");
+if (a) { auto fn = nfsmw::resolve_rel32(a); /* call target */ }
+```
+
+Pattern-matcher logic is covered by `tests/host_tests.py` (run in CI).
+
 ## hooks.h
 
 C API:
