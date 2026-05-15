@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+### Added (struct field offsets — honest, partial)
+
+- **`structs.h`** + `_generated_structs.h`: real `NFSMW_OFF_<S>_<f>` /
+  `NFSMW_SIZEOF_<S>` for **79** no/single-inheritance engine structs.
+  Offsets are compiler-computed from berkayylmao's NFSPluginSDK MW05
+  type definitions (BSD-3) built with MSVC-layout-matching flags
+  (`g++ -m32 -malign-double`); for these shapes the layout is
+  ABI-invariant vs the retail MSVC-7.10 game. The **21**
+  multiple/virtual-inheritance structs are opaque typedefs with offsets
+  **withheld** (Itanium↔MSVC base placement can differ, no in-binary
+  ground truth) — withheld, never guessed. `data/struct_offsets.json`
+  vendored; codegen `--check` covers it. `struct_offsets_demo` example
+  (12 total).
+
 ### Added / Fixed (events + CI)
 
 - **`events.h`** (opt-in): subscribe to the global hashed gameplay

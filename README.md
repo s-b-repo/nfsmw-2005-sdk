@@ -131,5 +131,9 @@ addresses/offsets derived from clean-room RE for interoperability. The
 mirrored NFSPluginSDK retains berkayylmao's BSD-3 license
 (`docs/nfsplugin_sdk_mw05/LICENSE`). The vendored MinHook backend
 (`extern/minhook/`) is © Tsuda Kageyu, BSD-2-Clause
-(`extern/minhook/LICENSE.txt`) — compatible with this SDK's BSD-3. You
-must own a legitimate copy of NFSMW to use any mod built with this SDK.
+(`extern/minhook/LICENSE.txt`) — compatible with this SDK's BSD-3. The
+struct field offsets in `data/struct_offsets.json` / `structs.h` are
+compiler-derived from berkayylmao's NFSPluginSDK MW05 type definitions
+(BSD-3, `docs/nfsplugin_sdk_mw05/LICENSE`); only the resulting offset
+table is shipped, not his source. You must own a legitimate copy of
+NFSMW to use any mod built with this SDK.

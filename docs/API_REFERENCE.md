@@ -179,6 +179,30 @@ The one build-specific address (`NFSMW_LUA_REGISTRAR`) is an overridable
 macro by design — the SDK ships the mechanism + verified anchors, never
 a guessed address. Example: `lua_native_demo`.
 
+## structs.h — engine struct field offsets (opt-in)
+
+`NFSMW_OFF_<Struct>_<field>` and `NFSMW_SIZEOF_<Struct>` for **79**
+no/single-inheritance engine structs. Provenance: compiler-computed from
+berkayylmao's NFSPluginSDK MW05 type definitions (BSD-3) under
+MSVC-layout-matching flags (`g++ -m32 -malign-double`) — for these
+shapes the GCC i686 layout is provably identical to the retail
+MSVC-7.10 game layout (ABI-invariant). **No numbers are guessed.**
+
+- `NFSMW_FIELD(ptr, off, type)` — `*(type*)((char*)ptr + off)` helper.
+- The **21** multiple/virtual-inheritance structs are opaque typedefs
+  with **no** offsets (Itanium↔MSVC base placement can differ and there
+  is no in-binary ground truth — withheld rather than wrong).
+- Regenerate from `data/struct_offsets.json` via `tools/codegen.py`.
+
+```cpp
+#include <nfsmw_sdk/structs.h>
+// race = RaceParameters* from a hook/global
+NFSMW_FIELD(race, NFSMW_OFF_RaceParameters_TrafficDensity,
+            unsigned char) = 0;
+```
+
+See the `struct_offsets_demo` example.
+
 ## events.h — global hashed gameplay event bus (opt-in)
 
 React to the engine's cross-subsystem events (race finish, pursuit
