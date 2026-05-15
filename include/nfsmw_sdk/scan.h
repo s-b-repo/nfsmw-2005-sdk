@@ -46,7 +46,7 @@ static inline int nfsmw_main_module_range(uintptr_t *base_out, size_t *size_out)
     return 1;
 }
 
-/* Parse one pattern token; returns 1 and sets *val/*wild, or 0 at end. */
+/* Parse one pattern token; returns 1 and sets val/wild, or 0 at end. */
 static inline const char *nfsmw__pat_next(const char *p, int *val, int *wild) {
     while (*p == ' ' || *p == '\t') ++p;
     if (!*p) return 0;

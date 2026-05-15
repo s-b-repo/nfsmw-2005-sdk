@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Added (ergonomics + cookbook)
+
+- **`docs/COOKBOOK.md`**: 10 complete, copy-pasteable recipes composing
+  the verified primitives (infinite/slow-mo/no-traffic/2x-bounty/
+  attribute edit/event react/overlay/hotkey/struct-offset field edit/
+  code patch) + an honest **why-not** section documenting deliberate
+  omissions (no typed GRaceStatus/FE-screen/set_heat — and the reason).
+- **platform.h**: `NFSMW_PTR_AT(addr,type)` + `nfsmw::ptr/ref/read/
+  write/field<T>()` — the missing sugar that makes `NFSMW_OFF_*` /
+  `NFSMW_GLOBAL_*` composition pleasant. No new addresses.
+- **scan.h**: fixed a stray `/*`-in-comment (`-Wcomment`).
+
 ### Added (struct field offsets — honest, partial)
 
 - **`structs.h`** + `_generated_structs.h`: real `NFSMW_OFF_<S>_<f>` /
