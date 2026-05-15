@@ -57,3 +57,10 @@
 - **tests/host_tests.py**: native unit tests for the
   platform-independent logic (bChunk known-value + AOB matcher),
   wired into CI.
+- **attributes.h**: real attribute get/set via `Collection::GetData @
+  0x454190` — `nfsmw_collection_get_data` plus typed
+  `nfsmw_attr_get/set_float` and `_int`. The `handling_tweaks` example
+  now actually reads and halves the player car's MASS end-to-end
+  instead of pointing at a doc.
+- **functions.h**: `NFSMW_FN_CollectionGetData`,
+  `NFSMW_FN_ClassGetCollection`, `NFSMW_FN_ClassGetNumCollections`.

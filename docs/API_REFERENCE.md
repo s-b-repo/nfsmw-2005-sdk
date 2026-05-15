@@ -75,11 +75,20 @@ bChunk = Bob Jenkins 1996 mix3, seed `0xABCDEF00`.
   (auto-generated from `docs/attribute_cracks_verified.json`).
 - `nfsmw_find_collection(class, name)` — wraps `FindCollection @
   0x455FD0`; hashes both args with bChunk.
+- `nfsmw_collection_get_data(coll, key, index)` — wraps
+  `Collection::GetData @ 0x454190`; returns a pointer to the live
+  attribute value (write through it to mutate).
+- Typed helpers (return 1 on success, 0 if absent):
+  `nfsmw_attr_get_float/set_float`, `nfsmw_attr_get_int/set_int`.
 
 ```cpp
-auto coll = nfsmw_find_collection("pvehicle", "bmwm3gtre46");
-uint32_t mass = NFSMW_BCHUNK("MASS");
+nfsmw_Collection *c = nfsmw_find_collection("pvehicle", "bmwm3gtre46");
+float mass;
+if (nfsmw_attr_get_float(c, NFSMW_BCHUNK("MASS"), &mass))
+    nfsmw_attr_set_float(c, NFSMW_BCHUNK("MASS"), mass * 0.5f);
 ```
+
+(See the `handling_tweaks` example for the full flow.)
 
 ## scan.h — signature scanner
 
