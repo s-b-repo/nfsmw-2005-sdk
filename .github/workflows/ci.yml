@@ -50,6 +50,28 @@ jobs:
           test -f _prefix/lib/cmake/nfsmw_sdk/nfsmw_sdkConfig.cmake
           test -f _prefix/share/nfsmw_sdk/src/entry.c
 
+      - name: Downstream find_package consumer build
+        run: |
+          set -e
+          mkdir -p /tmp/consumer
+          cat > /tmp/consumer/mod.cpp <<'EOF'
+          #include <nfsmw_sdk/nfsmw_sdk.h>
+          NFSMW_PLUGIN_DECLARE("CI Consumer", "1.0.0", "ci")
+          NFSMW_PLUGIN_MAIN() { *nfsmw::Tweak_InfiniteNOS() = true; return NFSMW_OK; }
+          EOF
+          cat > /tmp/consumer/CMakeLists.txt <<'EOF'
+          cmake_minimum_required(VERSION 3.16)
+          project(ci_consumer LANGUAGES C CXX)
+          find_package(nfsmw_sdk CONFIG REQUIRED)
+          nfsmw_add_plugin(ci_consumer SOURCES mod.cpp)
+          EOF
+          cmake -S /tmp/consumer -B /tmp/consumer/b \
+            -DCMAKE_TOOLCHAIN_FILE=$PWD/cmake/nfsmw-toolchain-mingw-i686.cmake \
+            -Dnfsmw_sdk_DIR=$PWD/_prefix/lib/cmake/nfsmw_sdk
+          cmake --build /tmp/consumer/b
+          file /tmp/consumer/b/ci_consumer.dll | grep -q "Intel i386"
+          test -f /tmp/consumer/b/ci_consumer.asi
+
   cpp14:
     name: C++14 compatibility
     runs-on: ubuntu-latest

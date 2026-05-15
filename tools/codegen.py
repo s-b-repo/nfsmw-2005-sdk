@@ -2,10 +2,16 @@
 """
 codegen.py — regenerate nfsmw_sdk headers from the JSON knowledge base.
 
-Reads:
-  ../../docs/sdk_addrs.json                (181 records: 153 fn + 28 globals)
-  ../../docs/attribute_cracks_verified.json (294 {hash: name} verified attrs)
-  ../../docs/sdk_enums.json                 (65 enums w/ members)
+Source of truth: the vendored copies in sdk/data/ (the SDK repo is
+standalone, so CI can verify the generated headers). A maintainer
+updating the RE database must re-sync sdk/data/ from the main repo's
+docs/ (cp docs/*.json sdk/data/) and re-run this tool. If sdk/data/ is
+absent, falls back to ../../docs/ for in-place main-repo regeneration.
+
+Reads (sdk/data/ first, then ../../docs/ fallback):
+  sdk_addrs.json                (181 records: 153 fn + 28 globals)
+  attribute_cracks_verified.json (294 {hash: name} verified attrs)
+  sdk_enums.json                 (65 enums w/ members)
 
 Writes (address tables only; hand-written helper code is preserved):
   ../include/nfsmw_sdk/_generated_addrs.h
@@ -28,17 +34,20 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 SDK = os.path.dirname(HERE)
 REPO = os.path.dirname(SDK)
-DOCS = os.path.join(REPO, "docs")
+DATA = os.path.join(SDK, "data")          # vendored — SDK repo source of truth
+DOCS = os.path.join(REPO, "docs")         # main-repo fallback for maintainers
 INC = os.path.join(SDK, "include", "nfsmw_sdk")
 
 
 def load_json(name):
-    path = os.path.join(DOCS, name)
-    if not os.path.exists(path):
-        print(f"  (skip: {name} not found)", file=sys.stderr)
-        return None
-    with open(path) as f:
-        return json.load(f)
+    for root in (DATA, DOCS):
+        path = os.path.join(root, name)
+        if os.path.exists(path):
+            with open(path) as f:
+                return json.load(f)
+    print(f"  (skip: {name} not found in sdk/data/ or ../../docs/)",
+          file=sys.stderr)
+    return None
 
 
 def ident(s):

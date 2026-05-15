@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### Fixed (CI)
+
+- **codegen.py / sdk/data**: vendored the source JSON
+  (`sdk_addrs.json`, `attribute_cracks_verified.json`, `sdk_enums.json`)
+  into `sdk/data/`. The standalone repo previously had no source for
+  `codegen.py --check`, so CI failed every run (headers reported stale).
+  codegen now reads `sdk/data/` first and falls back to `../../docs/`
+  for in-place main-repo regen. Verified the vendored JSON yields
+  byte-identical generated headers.
+- **CI**: added a downstream `find_package(nfsmw_sdk CONFIG)` consumer
+  build step (catches helpers-path / export regressions the
+  install-only step misses).
+- **scan.h / API_REFERENCE**: documented that `nfsmw_aob_scan` covers
+  the whole image (.text/.rdata/.data) — use long, code-distinctive
+  patterns.
+
 ### Fixed (correctness — P0)
 
 - **entry.c**: removed `wsprintfA` (user32 dependency that broke the MSVC

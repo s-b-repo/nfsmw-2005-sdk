@@ -103,13 +103,24 @@ NFSMW_PLUGIN_MAIN() {
 ## Regenerating address tables
 
 `tools/codegen.py` rebuilds `_generated_addrs.h`, `_generated_attrs.h`,
-`_generated_enums.h` from the project JSON. Run after the RE database
-updates:
+`_generated_enums.h` from the vendored JSON in **`sdk/data/`** — the
+SDK's self-contained source of truth (so CI can verify the headers).
 
 ```bash
 python3 sdk/tools/codegen.py            # regenerate
 python3 sdk/tools/codegen.py --check    # CI guard: nonzero if stale
 ```
+
+When the upstream RE database (`nfsmw-2005-re/docs/`) changes, re-sync
+and regenerate:
+
+```bash
+cp ../nfsmw-2005-re/docs/{sdk_addrs,attribute_cracks_verified,sdk_enums}.json sdk/data/
+python3 sdk/tools/codegen.py
+```
+
+(Running inside the main RE-project tree, `codegen.py` falls back to
+`../../docs/` automatically if `sdk/data/` is absent.)
 
 ## Legal
 
