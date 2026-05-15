@@ -18,6 +18,9 @@
 /* ----- Hash / attribute API ----- */
 #define NFSMW_FN_StringToKey                                    0x454640u  /* uint32_t __cdecl (const char*) — bChunk Jenkins mix3 */
 #define NFSMW_FN_FindCollection                                 0x455FD0u  /* Collection* __cdecl (uint32_t classKey, uint32_t collKey) */
+#define NFSMW_FN_CollectionGetData                              0x454190u  /* T* __thiscall (Collection*, uint32_t key, int32_t index) */
+#define NFSMW_FN_ClassGetCollection                             0x455960u  /* Collection* __thiscall (Class*, uint32_t collKey) */
+#define NFSMW_FN_ClassGetNumCollections                         0x453FC0u  /* uint32_t __thiscall (Class*) */
 
 /* ----- Game state machine ----- */
 #define NFSMW_FN_ProcessGameStateMachine                        0x6596A0u  /* __fastcall — function-pointer trampoline */

@@ -105,6 +105,43 @@ static inline nfsmw_Collection* nfsmw_find_collection(const char *className, con
     return ((nfsmw_FindCollection_fn)NFSMW_FN_FindCollection)(ck, lk);
 }
 
+/* Collection::GetData @ 0x454190 — returns a pointer to the raw attribute
+ * value inside the collection's data block, or NULL if absent.
+ *   key   = bChunk hash of the attribute name (e.g. NFSMW_BCHUNK("MASS"))
+ *   index = array index for array attributes (0 for scalars)
+ * Write through the returned pointer to mutate the live attribute. */
+typedef void* (NFSMW_THISCALL *nfsmw_CollectionGetData_fn)(
+    nfsmw_Collection *self, uint32_t key, int32_t index);
+
+static inline void* nfsmw_collection_get_data(nfsmw_Collection *coll,
+                                              uint32_t key, int32_t index) {
+    if (!coll) return 0;
+    return ((nfsmw_CollectionGetData_fn)NFSMW_FN_CollectionGetData)(coll, key, index);
+}
+
+/* Typed convenience accessors. Return 1 on success, 0 if the attribute
+ * is not present in the collection. */
+static inline int nfsmw_attr_get_float(nfsmw_Collection *c, uint32_t key, float *out) {
+    void *p = nfsmw_collection_get_data(c, key, 0);
+    if (!p || !out) return 0;
+    *out = *(float*)p; return 1;
+}
+static inline int nfsmw_attr_set_float(nfsmw_Collection *c, uint32_t key, float v) {
+    void *p = nfsmw_collection_get_data(c, key, 0);
+    if (!p) return 0;
+    *(float*)p = v; return 1;
+}
+static inline int nfsmw_attr_get_int(nfsmw_Collection *c, uint32_t key, uint32_t *out) {
+    void *p = nfsmw_collection_get_data(c, key, 0);
+    if (!p || !out) return 0;
+    *out = *(uint32_t*)p; return 1;
+}
+static inline int nfsmw_attr_set_int(nfsmw_Collection *c, uint32_t key, uint32_t v) {
+    void *p = nfsmw_collection_get_data(c, key, 0);
+    if (!p) return 0;
+    *(uint32_t*)p = v; return 1;
+}
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
