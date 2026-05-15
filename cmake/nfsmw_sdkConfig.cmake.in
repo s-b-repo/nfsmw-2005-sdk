@@ -7,6 +7,13 @@
 
 set_and_check(NFSMW_SDK_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")
 set_and_check(NFSMW_SDK_ENTRY_SOURCE "@PACKAGE_ENTRY_INSTALL_PATH@")
+set_and_check(NFSMW_SDK_MINHOOK_DIR  "@PACKAGE_MINHOOK_INSTALL_DIR@")
+
+# Inline-hook backend (override before find_package or via cache):
+#   -DNFSMW_HOOKS_BACKEND=minhook|simple   (default minhook)
+if(NOT DEFINED NFSMW_HOOKS_BACKEND)
+    set(NFSMW_HOOKS_BACKEND "minhook")
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/nfsmw_sdkHelpers.cmake")
 

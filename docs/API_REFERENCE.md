@@ -140,19 +140,36 @@ nfsmw_hotkeys_start();
 C API:
 - `nfsmw_vtable_hook(vtbl_addr, slot, new_fn, &orig)` — swap one vtable
   slot; restores protection.
-- `nfsmw_jmp_detour(target, new_fn, &trampoline, sizeof_steal)` — 5-byte
-  `E9` detour; returns a trampoline to call the original.
-- `nfsmw_free_trampoline(t)` — release on unload.
+- `nfsmw_inline_hook(target, detour, &orig)` /
+  `nfsmw_inline_unhook(target)` — **MinHook backend** (when built with
+  `NFSMW_HOOKS_BACKEND_MINHOOK`, the CMake default). Hooks any prologue;
+  `*orig` is a callable trampoline. Lazy `MH_Initialize`.
+- `nfsmw_jmp_detour(target, new_fn, &trampoline, sizeof_steal)` — simple
+  5-byte `E9` detour (no instruction relocation; clean prologues only).
+  `nfsmw_free_trampoline(t)` to release.
 
 C++ RAII:
+- `nfsmw::InlineHook<Sig> h(target, &cb);` — **recommended** for free
+  functions. `h.original()`, `h.installed()`; auto-unhooks in dtor.
+  Uses MinHook when available, else degrades to the 5-byte detour.
 - `nfsmw::VTableHook<Sig> h(vtbl, slot, &cb);` — `h.orig()`,
-  `h.installed()`; auto-restores in destructor. Keep it `static` /
-  long-lived.
-- `nfsmw::JmpDetour<Sig> d(target, &cb);` — `d.trampoline()`.
+  `h.installed()`; auto-restores. Keep it `static` / long-lived.
+- `nfsmw::JmpDetour<Sig> d(target, &cb);` — simple-backend escape hatch;
+  `d.trampoline()`.
+
+Backend select: `-DNFSMW_HOOKS_BACKEND=minhook` (default) or `simple`.
+MinHook is vendored at `extern/minhook/` (BSD-2); `nfsmw_add_plugin()`
+compiles + links it automatically when the backend is `minhook`.
 
 ```cpp
+// vtable method
 using Fn = void (NFSMW_THISCALL*)(void*, void*);
-static nfsmw::VTableHook<Fn> hook(NFSMW_VTBL_AIVehicleHelicopter, 17, &cb);
+static nfsmw::VTableHook<Fn> vh(NFSMW_VTBL_AIVehicleHelicopter, 17, &cb);
+
+// any free function (robust)
+using AF = void (NFSMW_THISCALL*)(void*, void*, int);
+static nfsmw::InlineHook<AF> ih(NFSMW_FN_AwardPlayerBounty_Impl, &my);
+auto orig = ih.original();
 ```
 
 ## Return codes

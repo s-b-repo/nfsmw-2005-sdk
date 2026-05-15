@@ -129,5 +129,7 @@ python3 sdk/tools/codegen.py
 BSD-3-Clause. This SDK ships **no copyrighted EA game data** — only
 addresses/offsets derived from clean-room RE for interoperability. The
 mirrored NFSPluginSDK retains berkayylmao's BSD-3 license
-(`docs/nfsplugin_sdk_mw05/LICENSE`). You must own a legitimate copy of
-NFSMW to use any mod built with this SDK.
+(`docs/nfsplugin_sdk_mw05/LICENSE`). The vendored MinHook backend
+(`extern/minhook/`) is © Tsuda Kageyu, BSD-2-Clause
+(`extern/minhook/LICENSE.txt`) — compatible with this SDK's BSD-3. You
+must own a legitimate copy of NFSMW to use any mod built with this SDK.
