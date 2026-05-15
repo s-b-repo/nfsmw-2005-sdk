@@ -10,7 +10,7 @@ jobs:
     name: codegen-check + cross-build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install MinGW-w64 (i686) + CMake
         run: |
@@ -83,7 +83,7 @@ jobs:
     name: C++14 compatibility
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install MinGW-w64 (i686)
         run: |
           sudo apt-get update
