@@ -24,37 +24,53 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # === The SDK is header-only — interface library ===
 add_library(nfsmw_sdk INTERFACE)
+add_library(nfsmw::sdk ALIAS nfsmw_sdk)
 target_include_directories(nfsmw_sdk INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 target_link_libraries(nfsmw_sdk INTERFACE kernel32)
 
-# === Unified entry shim (one DLL serves ASI + BepInEx) ===
-add_library(nfsmw_entry OBJECT src/entry.c)
-target_link_libraries(nfsmw_entry PUBLIC nfsmw_sdk)
-
-# === Plugin helper macro ===
-# Usage:  nfsmw_add_plugin(my_mod SOURCES my_mod.cpp)
-# Produces my_mod.dll (BepInEx plugin) + my_mod.asi (ASI loader copy).
-function(nfsmw_add_plugin name)
-    cmake_parse_arguments(P "" "" "SOURCES" ${ARGN})
-
-    add_library(${name} SHARED ${P_SOURCES} $<TARGET_OBJECTS:nfsmw_entry>)
-    target_link_libraries(${name} PRIVATE nfsmw_sdk)
-    set_target_properties(${name} PROPERTIES PREFIX "" SUFFIX ".dll")
-
-    add_custom_command(TARGET ${name} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-            $<TARGET_FILE:${name}> $<TARGET_FILE_DIR:${name}>/${name}.asi
-        COMMENT "Copying ${name}.dll -> ${name}.asi for ASI Loader")
-endfunction()
+# === Plugin helper (shared with installed consumers) ===
+set(NFSMW_SDK_INCLUDE_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(NFSMW_SDK_ENTRY_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/entry.c")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/nfsmw_sdkHelpers.cmake")
 
 # === Examples ===
 if(NFSMW_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-# === Install ===
-install(DIRECTORY include/nfsmw_sdk DESTINATION include)
+# === Install + package config ===
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
+set(INCLUDE_INSTALL_DIR  "${CMAKE_INSTALL_INCLUDEDIR}")
+set(ENTRY_INSTALL_PATH   "${CMAKE_INSTALL_DATADIR}/nfsmw_sdk/src/entry.c")
+set(CONFIG_INSTALL_DIR   "${CMAKE_INSTALL_LIBDIR}/cmake/nfsmw_sdk")
+
+install(DIRECTORY include/nfsmw_sdk
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(FILES src/entry.c
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/nfsmw_sdk/src")
+install(FILES cmake/nfsmw_sdkHelpers.cmake
+        DESTINATION "${CONFIG_INSTALL_DIR}")
 install(TARGETS nfsmw_sdk EXPORT nfsmw_sdkTargets)
-install(EXPORT nfsmw_sdkTargets DESTINATION lib/cmake/nfsmw_sdk)
+install(EXPORT nfsmw_sdkTargets
+        NAMESPACE nfsmw::
+        DESTINATION "${CONFIG_INSTALL_DIR}")
+
+configure_package_config_file(
+    cmake/nfsmw_sdkConfig.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/nfsmw_sdkConfig.cmake"
+    INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
+    PATH_VARS INCLUDE_INSTALL_DIR ENTRY_INSTALL_PATH)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/nfsmw_sdkConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/nfsmw_sdkConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/nfsmw_sdkConfigVersion.cmake"
+    DESTINATION "${CONFIG_INSTALL_DIR}")

@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+
+# nfsmw_sdkConfig — makes find_package(nfsmw_sdk CONFIG) work.
+#
+#   find_package(nfsmw_sdk CONFIG REQUIRED)
+#   nfsmw_add_plugin(my_mod SOURCES my_mod.cpp)
+
+set_and_check(NFSMW_SDK_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(NFSMW_SDK_ENTRY_SOURCE "@PACKAGE_ENTRY_INSTALL_PATH@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/nfsmw_sdkHelpers.cmake")
+
+# Header-only imported interface target: nfsmw::sdk
+if(NOT TARGET nfsmw::sdk)
+    add_library(nfsmw::sdk INTERFACE IMPORTED)
+    set_target_properties(nfsmw::sdk PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${NFSMW_SDK_INCLUDE_DIR}"
+        INTERFACE_LINK_LIBRARIES "kernel32")
+endif()
+
+check_required_components(nfsmw_sdk)

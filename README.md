@@ -1,5 +1,7 @@
 # nfsmw_sdk — Need for Speed: Most Wanted (2005) Mod SDK
 
+![CI](https://github.com/s-b-repo/nfsmw-2005-sdk/actions/workflows/ci.yml/badge.svg)
+
 A header-only C/C++ SDK for writing native mods for **NFSMW (2005)
 `speed.exe`** (PE32, i386, image base `0x00400000`). Build the mod source
 from **Linux, Windows, or macOS**; the output is always a 32-bit Win32 DLL
@@ -57,6 +59,25 @@ cmake --build build
 
 Drop `infinite_nos.asi` into `<NFSMW>/scripts/` (ASI Loader) **or**
 `infinite_nos.dll` into `<NFSMW>/BepInEx/plugins/` (BepInEx 6 native).
+
+## Use it in your own project
+
+Install once, then consume via `find_package` — no hardcoded paths:
+
+```bash
+cmake -S sdk -B sdk/build -DNFSMW_BUILD_EXAMPLES=OFF \
+  -DCMAKE_TOOLCHAIN_FILE=sdk/cmake/nfsmw-toolchain-mingw-i686.cmake \
+  -DCMAKE_INSTALL_PREFIX=$HOME/.local
+cmake --build sdk/build --target install
+```
+
+```cmake
+# your mod's CMakeLists.txt
+find_package(nfsmw_sdk CONFIG REQUIRED)
+nfsmw_add_plugin(my_mod SOURCES my_mod.cpp)   # -> my_mod.dll + my_mod.asi
+```
+
+(Or just vendor/submodule the repo and `add_subdirectory(sdk)`.)
 
 ## Minimal mod
 
