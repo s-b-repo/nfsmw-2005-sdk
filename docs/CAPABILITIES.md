@@ -69,6 +69,7 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 | Draw an on-screen overlay / debug UI | ✅ | via the D3D9 EndScene hook (ImGui-ready); `overlay_demo` example draws every frame with zero external deps |
 | Read / override the game's own input | ✅ | `input.h` — `nfsmw_input_binding_row(action)` to inspect/rebind; `nfsmw::input::on_poll(cb)` runs each frame right after the engine refreshes action state (read or inject) |
 | Add a C function callable from game scripts | ✅ | `lua.h` — `nfsmw::lua::on_register_natives` + `nfsmw_lua_register` (vanilla Lua 5.0.2). One build-specific registrar address (`NFSMW_LUA_REGISTRAR`) resolved per target |
+| React to engine gameplay events (race finish, pursuit enter/over, milestone, reputation, audio cues) | ✅ | `events.h` — `nfsmw_events_subscribe("MPursuitOver", cb, ctx)` / `nfsmw::events::on(name, …)` on the global hashed bus; `on_any` snoops every event for discovery |
 | Managed config UI (BepInEx `ConfigEntry` style) | ❌ | No managed runtime — native game. Use your own INI/file, or hotkeys |
 
 ### Distribution & build

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Added / Fixed (events + CI)
+
+- **`events.h`** (opt-in): subscribe to the global hashed gameplay
+  event bus (`DAT_0091e0d0`) — `nfsmw_events_subscribe(name/hash,…)`,
+  `nfsmw::events::on`, and `nfsmw::events::on_any` (snoop every event
+  for discovery). Broadcast is passthrough-only by design (no
+  fabricated event handles). React to race/pursuit/milestone/audio
+  events with zero code patching. New `event_listener_demo` (11 total).
+- **CI**: bumped `actions/checkout@v4` → `@v5` (Node 24); silences the
+  Node 20 deprecation that would have started failing runs after
+  2026-09-16.
+
 ### Added (v1.2 — full mod surface)
 
 - **`iat_hook.h`** (opt-in): non-invasive import-table hooking

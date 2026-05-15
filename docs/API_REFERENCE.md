@@ -179,6 +179,31 @@ The one build-specific address (`NFSMW_LUA_REGISTRAR`) is an overridable
 macro by design — the SDK ships the mechanism + verified anchors, never
 a guessed address. Example: `lua_native_demo`.
 
+## events.h — global hashed gameplay event bus (opt-in)
+
+React to the engine's cross-subsystem events (race finish, pursuit
+enter/over, milestone unlock, reputation, audio cues,
+SpeedBreaker/PursuitBreaker) — keyed by `bChunk(name)` on the
+`DAT_0091e0d0` bus.
+
+- `nfsmw_events_subscribe("MPursuitOver", cb, ctx)` /
+  `nfsmw_events_subscribe_hash(hash, cb, ctx)` — register a listener.
+  No auto-unsubscribe (lives for process lifetime); register once.
+- `nfsmw::events::on(name, [](void* ev){ … })` — C++ convenience.
+- `nfsmw::events::on_any([](uint32_t hash){ … })` — inline-hooks the
+  broadcaster and reports every event's hash; the fastest way to
+  discover which event fires when (cross-ref `EVENT_BUSES.md` §8).
+- `nfsmw_events_broadcast_raw(handle)` — passthrough only. There is
+  **no** `broadcast(name,…)`: `BusBroadcastEventByHash` needs a
+  *constructed* event handle (hash at `+0x18`), not loose args —
+  fabricating one corrupts the heap. Build it the way the engine does.
+
+Callback ABI: cdecl `(void* event_handle, void* ctx)`. Treat
+`event_handle` as **opaque** (engine-internal); cdecl means a real
+3/4-arg engine signature still won't corrupt the caller, so verify by
+intercepting a known event before relying on any handle field. Example:
+`event_listener_demo`.
+
 ## d3d9_hooks.h — render-loop hook (opt-in)
 
 Not in the umbrella. `#include <nfsmw_sdk/d3d9_hooks.h>`. Self-contained:
