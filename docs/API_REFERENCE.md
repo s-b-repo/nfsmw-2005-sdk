@@ -114,6 +114,30 @@ if (a) { auto fn = nfsmw::resolve_rel32(a); /* call target */ }
 can false-match inside non-code data. Pattern-matcher logic is covered by
 `tests/host_tests.py` (run in CI).
 
+## d3d9_hooks.h — render-loop hook (opt-in)
+
+Not in the umbrella. `#include <nfsmw_sdk/d3d9_hooks.h>`. Self-contained:
+hooks the engine's `IDirect3DDevice9` by fixed COM vtable indices, so it
+needs **no d3d9.lib / no DirectX headers** (stays kernel32-only). The
+callback gets the raw `IDirect3DDevice9*` (cast it yourself if you
+include `<d3d9.h>` for ImGui/drawing).
+
+- `nfsmw_d3d9_install(endscene_cb, reset_cb)` — spins until the engine
+  device is live, then VMT-hooks `EndScene` (every presented frame) and
+  optionally `Reset` (window resize: `cb(dev,0)` pre, `cb(dev,1)` post).
+  `reset_cb` may be `NULL`. Idempotent.
+- `nfsmw::on_endscene([](void* dev){ ... })` — C++ convenience.
+- Device global `NFSMW_D3D9_DEVICE_PTR` (0x00982BDC) +
+  `NFSMW_D3D9_VT_ENDSCENE/RESET/PRESENT` slot indices are overridable.
+
+```cpp
+#include <nfsmw_sdk/d3d9_hooks.h>
+nfsmw::on_endscene([](void* dev){ /* draw overlay / ImGui::Render() */ });
+```
+
+See the `overlay_demo` example (paints a bar each frame via `Clear`,
+zero external deps).
+
 ## hotkeys.h — runtime keybinds (opt-in)
 
 Not pulled in by the umbrella header. `#include <nfsmw_sdk/hotkeys.h>`

@@ -15,6 +15,11 @@
 - New `inline_hook` example (2x bounty via `AwardPlayerBounty_Impl`).
 - `docs/CAPABILITIES.md` — honest can/can't matrix + BepInEx framing
   correction + roadmap.
+- **`d3d9_hooks.h`** (opt-in): hook the D3D9 render loop —
+  `nfsmw_d3d9_install` / `nfsmw::on_endscene` (+ Reset). Self-contained
+  COM-vtable hook, **no d3d9.lib**. New `overlay_demo` example draws a
+  bar every frame with zero external deps. Unlocks overlays / ImGui /
+  custom HUD.
 
 ### Fixed (CI)
 

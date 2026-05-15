@@ -44,7 +44,7 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 | Hook **any** function reliably (incl. tiny/relative prologues) | ✅ | `nfsmw::InlineHook<Sig>` — vendored **MinHook** backend (default CMake build); relocates prologue instructions, safe enable/disable |
 | Mid-function hook (hook an arbitrary instruction, not just entry) | 🔜 v1.2 | Needs the trampoline engine; roadmap |
 | Hook imported API calls (D3D9, file IO, Win32) | 🔜 v1.2 | IAT hook helper; roadmap |
-| Hook the D3D9 render loop (overlays, ImGui, custom HUD) | 🔜 v1.1 | `<nfsmw_sdk/d3d9_hooks.h>` → `nfsmw::on_endscene` / `on_reset` |
+| Hook the D3D9 render loop (overlays, ImGui, custom HUD) | ✅ | opt-in `<nfsmw_sdk/d3d9_hooks.h>` → `nfsmw_d3d9_install` / `nfsmw::on_endscene` (+ Reset); self-contained vtable hook, no d3d9.lib |
 | Unhook / restore | ✅ | RAII wrappers restore on destruction; MinHook backend adds safe disable |
 | Thread-safe hook install while game runs | ⚠️ | NFSMW game code is effectively single-threaded; MinHook suspends threads on (un)install but uninstalling while a thread is *in* your trampoline is still UB |
 
@@ -66,7 +66,7 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 | Capability | Status | How / limitation |
 |---|---|---|
 | Runtime keyboard hotkeys / toggles | ✅ | opt-in `<nfsmw_sdk/hotkeys.h>` (edge-triggered poll thread) |
-| Draw an on-screen overlay / debug UI | 🔜 v1.1 | via the D3D9 EndScene hook (ImGui-ready) |
+| Draw an on-screen overlay / debug UI | ✅ | via the D3D9 EndScene hook (ImGui-ready); `overlay_demo` example draws every frame with zero external deps |
 | Read the game's own input bindings | ⚠️ | Binding table mapped in RE DB (`0x008f6d80`); no typed wrapper yet — use raw addresses |
 | Managed config UI (BepInEx `ConfigEntry` style) | ❌ | No managed runtime — native game. Use your own INI/file, or hotkeys |
 
