@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+### Added (v1.1 — robust hooking)
+
+- **Vendored MinHook** (`extern/minhook/`, © Tsuda Kageyu, BSD-2) as the
+  default inline-hook backend. `nfsmw::InlineHook<Sig>` /
+  `nfsmw_inline_hook` now hook **any** function prologue reliably
+  (instruction relocation + trampoline + safe enable/disable) instead
+  of the 5-byte-E9-only `JmpDetour`. Selectable
+  `-DNFSMW_HOOKS_BACKEND=minhook|simple` (default `minhook`);
+  `nfsmw_add_plugin()` compiles/links MinHook automatically, install +
+  `find_package` ship and resolve it.
+- New `inline_hook` example (2x bounty via `AwardPlayerBounty_Impl`).
+- `docs/CAPABILITIES.md` — honest can/can't matrix + BepInEx framing
+  correction + roadmap.
+
 ### Fixed (CI)
 
 - **codegen.py / sdk/data**: vendored the source JSON

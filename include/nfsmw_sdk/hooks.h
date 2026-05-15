@@ -112,6 +112,59 @@ static inline void nfsmw_free_trampoline(void *trampoline) {
 } /* extern "C" */
 #endif
 
+/* ===================================================================
+ * Robust inline-hook backend (MinHook).
+ *
+ * The 5-byte E9 nfsmw_jmp_detour above does NOT relocate relative
+ * instructions and breaks on short prologues. When the SDK is built
+ * with the MinHook backend (default in the CMake build —
+ * -DNFSMW_HOOKS_BACKEND=minhook), `nfsmw_inline_hook` uses MinHook's
+ * length-disassembler + trampoline engine and hooks ANY function
+ * prologue reliably, with safe enable/disable.
+ *
+ * Building without CMake: define NFSMW_HOOKS_BACKEND_MINHOOK and add
+ * the vendored extern/minhook sources + include dir to your build
+ * (the nfsmw_add_plugin() CMake helper does this automatically).
+ * =================================================================== */
+#if defined(NFSMW_HOOKS_BACKEND_MINHOOK)
+#include <MinHook.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+static volatile LONG nfsmw__mh_inited = 0;
+
+static inline int nfsmw__mh_ensure_init(void) {
+    LONG prev = InterlockedCompareExchange(&nfsmw__mh_inited, 1, 0);
+    if (prev == 0) {
+        if (MH_Initialize() != MH_OK) { nfsmw__mh_inited = 2; return 0; }
+        nfsmw__mh_inited = 3;            /* 3 = ready */
+        return 1;
+    }
+    /* spin until the initializing thread settles (rare) */
+    while (nfsmw__mh_inited == 1) { /* yield */ }
+    return nfsmw__mh_inited == 3;
+}
+
+/* Install an inline hook on any function. `*orig_out` receives a
+ * callable trampoline to the original. Returns 1 on success. */
+static inline int nfsmw_inline_hook(void *target, void *detour, void **orig_out) {
+    if (!nfsmw__mh_ensure_init()) return 0;
+    if (MH_CreateHook(target, detour, orig_out) != MH_OK) return 0;
+    return MH_EnableHook(target) == MH_OK;
+}
+
+static inline int nfsmw_inline_unhook(void *target) {
+    if (MH_DisableHook(target) != MH_OK) return 0;
+    return MH_RemoveHook(target) == MH_OK;
+}
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+#endif /* NFSMW_HOOKS_BACKEND_MINHOOK */
+
 /* ---- C++ RAII Hook<Sig> wrapper ---- */
 #ifdef __cplusplus
 namespace nfsmw {
@@ -151,6 +204,50 @@ public:
     Sig trampoline() const { return reinterpret_cast<Sig>(trampoline_); }
 private:
     void *trampoline_;
+};
+
+/* InlineHook<Sig> — the recommended way to hook a free function.
+ *
+ *   using Fn = int (NFSMW_CDECL*)(void*);
+ *   Fn orig = nullptr;
+ *   int NFSMW_CDECL my(void* a) { return orig(a) + 1; }
+ *
+ *   static nfsmw::InlineHook<Fn> h(NFSMW_FN_SomeFunc, &my);
+ *   orig = h.original();          // call through to the real function
+ *
+ * With the MinHook backend (default CMake build) this hooks ANY
+ * prologue. Without it, it degrades to the 5-byte JmpDetour and the
+ * same prologue caveats apply.
+ */
+template <typename Sig>
+class InlineHook {
+public:
+    InlineHook(uintptr_t target, Sig detour)
+        : target_(reinterpret_cast<void*>(target)),
+          orig_(nullptr), installed_(false) {
+#if defined(NFSMW_HOOKS_BACKEND_MINHOOK)
+        installed_ = nfsmw_inline_hook(target_,
+            reinterpret_cast<void*>(detour),
+            reinterpret_cast<void**>(&orig_)) != 0;
+#else
+        installed_ = nfsmw_jmp_detour(target_,
+            reinterpret_cast<void*>(detour),
+            reinterpret_cast<void**>(&orig_), 5) != 0;
+#endif
+    }
+    ~InlineHook() {
+#if defined(NFSMW_HOOKS_BACKEND_MINHOOK)
+        if (installed_) nfsmw_inline_unhook(target_);
+#else
+        if (installed_) nfsmw_free_trampoline(reinterpret_cast<void*>(orig_));
+#endif
+    }
+    Sig original() const { return orig_; }
+    bool installed() const { return installed_; }
+private:
+    void *target_;
+    Sig orig_;
+    bool installed_;
 };
 
 }  // namespace nfsmw

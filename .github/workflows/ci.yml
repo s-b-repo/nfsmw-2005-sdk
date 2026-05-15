@@ -28,8 +28,15 @@ jobs:
           cmake -S . -B build
           -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake
 
-      - name: Build all example mods
+      - name: Build all example mods (default = MinHook backend)
         run: cmake --build build -j
+
+      - name: Build with the simple hook backend (fallback path)
+        run: |
+          set -e
+          cmake -S . -B build_simple -DNFSMW_HOOKS_BACKEND=simple \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake
+          cmake --build build_simple --target infinite_nos inline_hook -j
 
       - name: Verify artifacts are 32-bit Win32 DLLs
         run: |

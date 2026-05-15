@@ -40,8 +40,8 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 |---|---|---|
 | Run code at game start | ✅ | `NFSMW_PLUGIN_MAIN`; one-shot, post-image-load, validated `speed.exe` |
 | Replace a C++ virtual method | ✅ | `nfsmw::VTableHook<Sig>` — swap any vtable slot, chain to original |
-| Detour a free function (clean ≥5-byte prologue) | ⚠️→✅ | `nfsmw::JmpDetour` today is 5-byte E9 with **no instruction relocation** (breaks on short/relative prologues). v1.1: MinHook backend → robust trampolines for *any* prologue |
-| Hook **any** function reliably (incl. tiny/relative prologues) | 🔜 v1.1 | Vendored MinHook backend (`nfsmw::InlineHook<Sig>`) |
+| Detour a free function (clean ≥5-byte prologue) | ✅ | `nfsmw::JmpDetour` (simple 5-byte) or — recommended — `nfsmw::InlineHook` |
+| Hook **any** function reliably (incl. tiny/relative prologues) | ✅ | `nfsmw::InlineHook<Sig>` — vendored **MinHook** backend (default CMake build); relocates prologue instructions, safe enable/disable |
 | Mid-function hook (hook an arbitrary instruction, not just entry) | 🔜 v1.2 | Needs the trampoline engine; roadmap |
 | Hook imported API calls (D3D9, file IO, Win32) | 🔜 v1.2 | IAT hook helper; roadmap |
 | Hook the D3D9 render loop (overlays, ImGui, custom HUD) | 🔜 v1.1 | `<nfsmw_sdk/d3d9_hooks.h>` → `nfsmw::on_endscene` / `on_reset` |
@@ -92,10 +92,12 @@ Legend: ✅ supported · ⚠️ supported with caveats · 🔜 planned (v1.1/v1.
 
 ## Roadmap
 
-**v1.1 (next):**
-- Vendor **MinHook** (BSD-2) as the detour backend → `nfsmw::InlineHook`
+**v1.1 — done:**
+- ✅ Vendored **MinHook** (BSD-2) detour backend → `nfsmw::InlineHook`
   hooks *any* function prologue reliably. Selectable
   `-DNFSMW_HOOKS_BACKEND=minhook|simple` (default `minhook`).
+
+**v1.1 — remaining:**
 - `<nfsmw_sdk/d3d9_hooks.h>` — `nfsmw::on_endscene` / `on_reset` +
   `overlay_demo` example. Unlocks overlays / ImGui / custom rendering.
 
