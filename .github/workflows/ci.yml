@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    name: codegen-check + cross-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MinGW-w64 (i686) + CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+
+      - name: codegen.py --check (generated headers must be committed up to date)
+        run: python3 tools/codegen.py --check
+
+      - name: Configure (MinGW i686 cross toolchain)
+        run: >
+          cmake -S . -B build
+          -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake
+
+      - name: Build all example mods
+        run: cmake --build build -j
+
+      - name: Verify artifacts are 32-bit Win32 DLLs
+        run: |
+          set -e
+          for dll in build/examples/*.dll; do
+            file "$dll"
+            file "$dll" | grep -q "Intel i386" || { echo "NOT i386: $dll"; exit 1; }
+          done
+          ls build/examples/*.asi >/dev/null
+
+      - name: Install + find_package smoke test
+        run: |
+          set -e
+          cmake -S . -B ib -DNFSMW_BUILD_EXAMPLES=OFF \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake \
+            -DCMAKE_INSTALL_PREFIX=$PWD/_prefix
+          cmake --build ib --target install
+          test -f _prefix/lib/cmake/nfsmw_sdk/nfsmw_sdkConfig.cmake
+          test -f _prefix/share/nfsmw_sdk/src/entry.c
+
+  cpp14:
+    name: C++14 compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MinGW-w64 (i686)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686
+      - name: Build an example at -std=c++14
+        run: >
+          i686-w64-mingw32-g++ -std=c++14 -m32 -Os -shared
+          -static -static-libgcc -static-libstdc++ -Wl,--kill-at
+          -Iinclude
+          examples/infinite_nos/main.cpp src/entry.c
+          -o /tmp/infinite_nos.dll
