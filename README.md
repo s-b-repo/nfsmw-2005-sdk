@@ -39,7 +39,7 @@ sdk/
 │   ├── hooks.h             vtable hook + JMP detour (C + RAII C++)
 │   └── _generated_*.h      AUTO-GENERATED — do not edit
 ├── src/entry.c             unified ASI + BepInEx entry shim
-├── examples/               5 buildable example mods
+├── examples/               buildable example mods
 ├── bepinex-template/       drop-in BepInEx install skeleton
 ├── cmake/                  MinGW-w64 i686 cross toolchain file
 ├── tools/codegen.py        regenerates _generated_*.h from docs/*.json
