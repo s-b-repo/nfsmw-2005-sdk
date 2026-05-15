@@ -64,3 +64,8 @@
   instead of pointing at a doc.
 - **functions.h**: `NFSMW_FN_CollectionGetData`,
   `NFSMW_FN_ClassGetCollection`, `NFSMW_FN_ClassGetNumCollections`.
+- **hotkeys.h** (opt-in): edge-triggered keyboard hotkeys via a
+  background poll thread — `nfsmw_hotkey_register`,
+  `nfsmw_hotkeys_start`, `nfsmw::on_hotkey`. Adds user32 only for mods
+  that include it; core SDK stays kernel32-only. New `hotkey_toggles`
+  example (F5/F6/F7 cheat toggles).
