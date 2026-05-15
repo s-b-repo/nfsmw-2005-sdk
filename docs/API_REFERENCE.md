@@ -25,6 +25,10 @@ The body runs on the ASI worker thread (~2 s post-attach) **or** from
   - `nfsmw_write_bytes(addr, src, n)`
   - `nfsmw_write_byte/word/int/float(addr, v)`
   - `nfsmw_read_byte/word/int/float(addr)`
+- Typed sugar (compose `NFSMW_GLOBAL_*` with `NFSMW_OFF_*`):
+  - `NFSMW_PTR_AT(addr, type)` → `type*`
+  - `nfsmw::ptr<T>(addr)` / `ref<T>` / `read<T>` / `write<T>(addr,v)`
+  - `nfsmw::field<T>(base, off)` → `T&` at `base+off`
 
 ## globals.h
 

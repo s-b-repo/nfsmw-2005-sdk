@@ -134,8 +134,26 @@ static inline uint16_t nfsmw_read_word (uintptr_t addr) { return *(uint16_t*)add
 static inline uint32_t nfsmw_read_int  (uintptr_t addr) { return *(uint32_t*)addr; }
 static inline float    nfsmw_read_float(uintptr_t addr) { return *(float*)addr; }
 
+/* Typed pointer at an absolute address (compose with NFSMW_GLOBAL_* and
+ * NFSMW_OFF_*): NFSMW_PTR_AT(NFSMW_GLOBAL_Foo, MyStruct) */
+#define NFSMW_PTR_AT(addr, type) ((type*)(uintptr_t)(addr))
+
 #ifdef __cplusplus
 } /* extern "C" */
+
+namespace nfsmw {
+/* Ergonomic typed access over raw addresses (the missing primitive that
+ * makes NFSMW_OFF_* / NFSMW_GLOBAL_* pleasant to use). No new addresses
+ * — pure sugar over a pointer cast. */
+template <typename T> inline T*  ptr (uintptr_t addr) { return reinterpret_cast<T*>(addr); }
+template <typename T> inline T&  ref (uintptr_t addr) { return *reinterpret_cast<T*>(addr); }
+template <typename T> inline T   read(uintptr_t addr) { return *reinterpret_cast<T*>(addr); }
+template <typename T> inline void write(uintptr_t addr, const T& v) { *reinterpret_cast<T*>(addr) = v; }
+/* field at base+off (compose a global/hooked pointer with NFSMW_OFF_*) */
+template <typename T> inline T&  field(void* base, size_t off) {
+    return *reinterpret_cast<T*>(reinterpret_cast<char*>(base) + off);
+}
+}  // namespace nfsmw
 #endif
 
 #endif /* NFSMW_SDK_PLATFORM_H */

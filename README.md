@@ -101,6 +101,9 @@ NFSMW_PLUGIN_MAIN() {
 - [`docs/API_REFERENCE.md`](docs/API_REFERENCE.md)
 - [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md) — **what you can/can't
   hook & modify** + how BepInEx actually relates to this SDK + roadmap
+- [`docs/COOKBOOK.md`](docs/COOKBOOK.md) — **copy-pasteable recipes**
+  composing the primitives (incl. struct-offset field edits) + an
+  honest "why-not" list
 
 ## Regenerating address tables
 
