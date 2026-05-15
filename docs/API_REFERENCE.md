@@ -109,7 +109,10 @@ uintptr_t a = nfsmw::aob("E8 ?? ?? ?? ?? 8B 4C 24 10");
 if (a) { auto fn = nfsmw::resolve_rel32(a); /* call target */ }
 ```
 
-Pattern-matcher logic is covered by `tests/host_tests.py` (run in CI).
+`nfsmw_aob_scan` scans the **whole module image** (`.text` + `.rdata` +
+`.data`), so prefer long, code-distinctive patterns — a short signature
+can false-match inside non-code data. Pattern-matcher logic is covered by
+`tests/host_tests.py` (run in CI).
 
 ## hotkeys.h — runtime keybinds (opt-in)
 

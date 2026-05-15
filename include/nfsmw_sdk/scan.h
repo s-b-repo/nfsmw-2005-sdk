@@ -17,7 +17,10 @@
  *     uintptr_t g_foo = nfsmw_read_int(a + 2);              // absolute imm32
  *     uintptr_t tgt   = nfsmw_resolve_rel32(a + 1, 5);      // E8/E9 rel32 call/jmp
  *
- * Scans the main module's mapped image only (one pass, bounded).
+ * Scans the main module's mapped image only (one pass, bounded). NB: this
+ * covers ALL sections (.text, .rdata, .data) — use code-distinctive,
+ * sufficiently long patterns so a short signature can't false-match in
+ * non-code data.
  */
 
 #ifndef NFSMW_SDK_SCAN_H
