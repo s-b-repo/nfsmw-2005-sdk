@@ -15,8 +15,8 @@
 NFSMW_PLUGIN_DECLARE("Infinite NOS", "1.0.0", "nfsmw-2005-re")
 
 NFSMW_PLUGIN_MAIN() {
-    *nfsmw::Tweak_InfiniteNOS         = true;
-    *nfsmw::Tweak_InfiniteRaceBreaker = true;
+    *nfsmw::Tweak_InfiniteNOS()         = true;
+    *nfsmw::Tweak_InfiniteRaceBreaker() = true;
     OutputDebugStringA("[infinite_nos] enabled NOS + RaceBreaker\n");
     return NFSMW_OK;
 }

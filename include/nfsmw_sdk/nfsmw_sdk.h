@@ -8,7 +8,7 @@
  *   NFSMW_PLUGIN_DECLARE("MyMod", "1.0.0", "Author Name")
  *
  *   NFSMW_PLUGIN_MAIN() {
- *       *nfsmw::Tweak_InfiniteNOS = true;
+ *       *nfsmw::Tweak_InfiniteNOS() = true;
  *       return NFSMW_OK;
  *   }
  */

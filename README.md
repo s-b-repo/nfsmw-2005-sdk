@@ -66,7 +66,7 @@ Drop `infinite_nos.asi` into `<NFSMW>/scripts/` (ASI Loader) **or**
 NFSMW_PLUGIN_DECLARE("My Mod", "1.0.0", "me")
 
 NFSMW_PLUGIN_MAIN() {
-    *nfsmw::Tweak_InfiniteNOS = true;
+    *nfsmw::Tweak_InfiniteNOS() = true;
     return NFSMW_OK;
 }
 ```

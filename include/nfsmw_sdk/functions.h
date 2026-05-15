@@ -59,8 +59,10 @@
 #define NFSMW_FN_FE_PerFrameTick_DrainQueueAndUpdateChildren    0x5C53C0u  /* THE tick caller */
 #define NFSMW_FN_DispatchUIEvent_ToSubscriberHandler            0x5BBC00u
 #define NFSMW_FN_DispatchUIEvent_ToTypeRegistrySubscribers      0x5BEAA0u
-#define NFSMW_FN_FindSceneNodeByName                            0x0u       /* TBD */
-#define NFSMW_FN_RemoveSceneNodeByName                          0x0u       /* TBD */
+/* NOTE: FindSceneNodeByName / RemoveSceneNodeByName are not yet resolved
+ * in the RE database. They are intentionally NOT defined so that any use
+ * fails to compile rather than calling address 0. Define them yourself
+ * once the addresses are known. */
 
 /* ----- Audio event bus (DAT_0091e0d0) ----- */
 #define NFSMW_FN_BusBroadcastEventByHash                        0x61FC10u

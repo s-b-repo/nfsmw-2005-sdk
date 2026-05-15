@@ -35,9 +35,11 @@ The body runs on the ASI worker thread (~2 s post-attach) **or** from
 - `NFSMW_HUD_SLOT_<Widget>` — `CHudWidgetArray` member offsets.
 - `NFSMW_GEN_G_<Name>` / `NFSMW_GEN_F_<Fullname>` — the full
   machine-generated table (auto-generated, 28 globals + 153 functions).
-- C++ typed pointers in `namespace nfsmw`: `nfsmw::Tweak_InfiniteNOS`,
-  `nfsmw::DrawHUD`, `nfsmw::Tweak_GameSpeed`, etc.; generic
-  `nfsmw::global<T>(addr)`.
+- C++ typed accessor functions in `namespace nfsmw`:
+  `*nfsmw::Tweak_InfiniteNOS()`, `*nfsmw::DrawHUD()`,
+  `*nfsmw::Tweak_GameSpeed()`, etc.; generic `nfsmw::global<T>(addr)`.
+  (These are functions, not C++17 inline variables, so the SDK works on
+  C++14 — note the trailing `()`.)
 
 ## functions.h
 

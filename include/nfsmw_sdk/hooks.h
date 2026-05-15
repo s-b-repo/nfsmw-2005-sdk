@@ -93,6 +93,12 @@ static inline int nfsmw_jmp_detour(void *target, void *new_fn, void **trampoline
     /* fill remaining bytes (sizeof_steal - 5) with NOPs */
     for (size_t i = 5; i < sizeof_steal; ++i) t[i] = 0x90;
     VirtualProtect(t, sizeof_steal, old, &old);
+    /* Required: another thread may be sitting in this function with the
+     * old bytes cached. NB: this is NOT fully thread-safe — if a thread is
+     * executing *inside* the stolen prologue at patch time, behaviour is
+     * undefined. NFSMW is effectively single-threaded for game code, so
+     * this is acceptable here; for general use prefer MinHook. */
+    FlushInstructionCache(GetCurrentProcess(), t, sizeof_steal);
 
     if (trampoline_out) *trampoline_out = tramp;
     return 1;
