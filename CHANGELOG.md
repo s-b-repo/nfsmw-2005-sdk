@@ -42,3 +42,18 @@
 
 - **entry.c**: `NFSMW_ASI_INIT_DELAY_MS` compile-time override for the
   ASI worker startup delay (default 2000 ms).
+- **CMake**: `find_package(nfsmw_sdk CONFIG)` support — ships
+  `nfsmw_sdkConfig`, version file, installed headers + `entry.c` +
+  shared `nfsmw_sdkHelpers.cmake`. Consumers get `nfsmw_add_plugin()`
+  and the `nfsmw::sdk` target with zero hardcoded paths.
+- **CI**: GitHub Actions — `codegen --check`, host unit tests,
+  cross-build all examples, i386 verification, install/find_package
+  smoke test, and a C++14 build job.
+- **scan.h**: IDA-style AOB signature scanner (`nfsmw_aob_scan`,
+  `nfsmw_aob_scan_range`, `nfsmw_resolve_rel32`,
+  `nfsmw_main_module_range`; `nfsmw::aob` / `nfsmw::resolve_rel32`).
+  Lets mods locate code by byte pattern instead of hardcoded addresses,
+  surviving patched/repacked executables.
+- **tests/host_tests.py**: native unit tests for the
+  platform-independent logic (bChunk known-value + AOB matcher),
+  wired into CI.

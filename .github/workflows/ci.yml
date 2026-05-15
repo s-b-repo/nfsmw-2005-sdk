@@ -20,6 +20,9 @@ jobs:
       - name: codegen.py --check (generated headers must be committed up to date)
         run: python3 tools/codegen.py --check
 
+      - name: Host unit tests (bChunk + AOB scanner logic)
+        run: python3 tests/host_tests.py
+
       - name: Configure (MinGW i686 cross toolchain)
         run: >
           cmake -S . -B build
