@@ -99,6 +99,8 @@ NFSMW_PLUGIN_MAIN() {
 - [`docs/BUILDING_MAC.md`](docs/BUILDING_MAC.md)
 - [`docs/BEPINEX_INTEGRATION.md`](docs/BEPINEX_INTEGRATION.md)
 - [`docs/API_REFERENCE.md`](docs/API_REFERENCE.md)
+- [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md) — **what you can/can't
+  hook & modify** + how BepInEx actually relates to this SDK + roadmap
 
 ## Regenerating address tables
 
