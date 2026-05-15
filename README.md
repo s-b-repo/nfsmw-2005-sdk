@@ -31,20 +31,42 @@ See [`docs/BEPINEX_INTEGRATION.md`](docs/BEPINEX_INTEGRATION.md).
 sdk/
 ├── include/nfsmw_sdk/      header-only SDK
 │   ├── nfsmw_sdk.h         umbrella + NFSMW_PLUGIN_DECLARE/MAIN macros
-│   ├── platform.h          target/host detection, mem write helpers
+│   ├── platform.h          target detection, mem read/write, typed sugar
 │   ├── globals.h           typed global pointers + NFSMW_GLOBAL_* macros
 │   ├── functions.h         function address constants + typedef helpers
 │   ├── enums.h             engine enums
-│   ├── attributes.h        bChunk (Jenkins mix3) hash + Collection API
-│   ├── hooks.h             vtable hook + JMP detour (C + RAII C++)
+│   ├── attributes.h        bChunk (Jenkins mix3) hash + Collection get/set
+│   ├── hooks.h             vtable / inline (MinHook) / JMP detour
+│   ├── scan.h              AOB signature scanner
+│   ├── structs.h           verified struct field offsets (opt-in)
+│   ├── d3d9_hooks.h        D3D9 EndScene/Reset render hook (opt-in)
+│   ├── iat_hook.h          import-table hook (opt-in)
+│   ├── midhook.h           mid-function register hook (opt-in)
+│   ├── input.h             action-binding access + poll hook (opt-in)
+│   ├── lua.h               register Lua 5.0.2 script natives (opt-in)
+│   ├── events.h            global hashed event bus (opt-in)
+│   ├── hotkeys.h           runtime keybinds (opt-in)
 │   └── _generated_*.h      AUTO-GENERATED — do not edit
 ├── src/entry.c             unified ASI + BepInEx entry shim
-├── examples/               buildable example mods
+├── extern/minhook/         vendored MinHook backend (BSD-2)
+├── data/*.json             codegen sources (addrs/attrs/enums/structs)
+├── examples/               12 buildable example mods
 ├── bepinex-template/       drop-in BepInEx install skeleton
-├── cmake/                  MinGW-w64 i686 cross toolchain file
-├── tools/codegen.py        regenerates _generated_*.h from docs/*.json
+├── cmake/                  MinGW-w64 i686 cross toolchain + pkg config
+├── tools/codegen.py        regenerates _generated_*.h from data/*.json
+├── tests/host_tests.py     host unit tests (bChunk + AOB), run in CI
 └── CMakeLists.txt          cross-platform build + nfsmw_add_plugin()
 ```
+
+## Pre-built mods (no toolchain needed)
+
+Don't want to build? Every tagged release ships the 12 example mods
+pre-compiled (PE32 i386, dual ASI + BepInEx) — see
+**[Releases](https://github.com/s-b-repo/nfsmw-2005-sdk/releases)**
+(`nfsmw-sdk-examples-<tag>.zip`, built by CI from the tag). Drop a
+`.asi` into `<NFSMW>/scripts/` or a `.dll` into
+`<NFSMW>/BepInEx/plugins/`. The repo itself stays source-only; binaries
+live on Releases by design.
 
 ## Quick start
 

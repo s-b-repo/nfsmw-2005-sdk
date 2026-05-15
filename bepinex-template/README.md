@@ -13,7 +13,7 @@ NFSMW is a **native Win32** game (no Mono/.NET runtime), so it uses
 ├── BepInEx/
 │   ├── core/                ← BepInEx 6 native core DLLs
 │   └── plugins/
-│       └── infinite_nos.dll ← your nfsmw_sdk plugin (built with NFSMW_LOADER=BEPINEX)
+│       └── infinite_nos.dll ← your nfsmw_sdk plugin (one DLL, dual loader)
 ```
 
 ## Install steps
@@ -27,12 +27,13 @@ NFSMW is a **native Win32** game (no Mono/.NET runtime), so it uses
      (rename the proxy to `dinput8.dll`). NFSMW *does* import `dinput8.dll`.
    - **B:** Add `winhttp.dll` to NFSMW's import table with a PE editor.
    Set `doorstop_config.ini` → `[General] enabled=true`.
-4. Build your plugin with the BepInEx entry shim:
+4. Build your plugin (the unified `src/entry.c` makes every DLL work
+   under **both** loaders automatically — no loader flag):
    ```
-   cmake -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake \
-         -DNFSMW_LOADER=2 -B build
+   cmake -DCMAKE_TOOLCHAIN_FILE=cmake/nfsmw-toolchain-mingw-i686.cmake -B build
    cmake --build build --target infinite_nos
    ```
+   Or grab a pre-built DLL from the repo's Releases.
 5. Copy `build/examples/infinite_nos.dll` → `BepInEx/plugins/`.
 6. Launch `speed.exe`. Check `BepInEx/LogOutput.log` and DebugView for the
    `[nfsmw_sdk] BepInEx plugin loading` line.
@@ -41,6 +42,7 @@ NFSMW is a **native Win32** game (no Mono/.NET runtime), so it uses
 
 The same DLL can export both `BepInExNativePlugin_Load` (BepInEx) and a
 `DllMain` worker thread (ASI). Users pick whichever loader they already have.
-Build with `LOADER both` (default) and ship one DLL that works in either.
+There is no loader flag — `src/entry.c` always emits both entry points,
+so one built DLL works in either loader.
 
 See `../docs/BEPINEX_INTEGRATION.md` for troubleshooting.

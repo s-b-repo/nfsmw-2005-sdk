@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## v1.0.0 — 2026-05-15
+
+First tagged release. Full native modding surface for NFSMW (2005),
+buildable from Linux/Windows/macOS, loadable under both
+Ultimate-ASI-Loader and BepInEx 6 native from a single DLL.
+
+### Release / distribution
+
+- **GitHub Releases**: `.github/workflows/release.yml` cross-builds all
+  12 example mods on every `v*` tag and attaches
+  `nfsmw-sdk-examples-<tag>.zip` (PE32 i386, dual loader). The repo
+  stays source-only; pre-built binaries live on Releases.
+- **Docs sweep**: README structure block now lists every header;
+  added a "Pre-built mods" section; corrected stale `NFSMW_LOADER`
+  references in `bepinex-template/README.md` (loader selection has been
+  automatic since the unified `entry.c`).
+
 ### Added (ergonomics + cookbook)
 
 - **`docs/COOKBOOK.md`**: 10 complete, copy-pasteable recipes composing
