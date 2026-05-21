@@ -162,3 +162,14 @@ compiler-derived from berkayylmao's NFSPluginSDK MW05 type definitions
 (BSD-3, `docs/nfsplugin_sdk_mw05/LICENSE`); only the resulting offset
 table is shipped, not his source. You must own a legitimate copy of
 NFSMW to use any mod built with this SDK.
+
+---
+
+<details>
+<summary><sub>Support this project</sub></summary>
+<p align="center"><br/>
+If this tool saved you time, consider tossing $1 in Monero:<br/><br/>
+<code>478Lb78LDscQ8ukEDTZqXgEtjoBX1jMuVGvgfy2RagxZZk89YuyVYsganfLUKnwggz8YiBxhG25yWWiHUppG9uarSiseseY</code><br/><br/>
+<sub>XMR — private, untraceable, appreciated.</sub>
+</p>
+</details>
